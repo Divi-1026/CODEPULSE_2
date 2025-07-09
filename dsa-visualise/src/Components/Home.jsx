@@ -4,7 +4,6 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 
-// Icons
 const icons = {
   SearchIcon: () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="#03AC13">
@@ -114,17 +113,16 @@ export default function Home() {
   return (
     <>
       <Header onExplore={() => setshow(false)} />
-      <div className="md:mt-48 sm:mt-56 px-6">
-        {show && (
-          <div className="font-sans relative p-6 md:p-10 rounded-2xl mb-10 shadow-md border border-[#d6cbd3] bg-gradient-to-r from-[#ecf2f4] via-[#f9f9f9] to-[#e7eef0] overflow-hidden">
-            <div className="twinkling-stars absolute inset-0 z-0 pointer-events-none opacity-5"></div>
-            <div className="relative z-10 text-center space-y-5">
-              <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-blue-700">
-                Welcome to CodePulse
-              </h1>
-              <p className="text-xl font-semibold italic text-sky-500">
-                Feel the heartbeat of Visualise DSA.
-              </p>
+             <div className="md:mt-48 sm:mt-56 px-6">
+                   {show && (
+                       <div className="font-sans relative p-6 md:p-10 rounded-2xl mb-10 shadow-md border border-[#d6cbd3] bg-gradient-to-r from-[#ecf2f4] via-[#f9f9f9] to-[#e7eef0] overflow-hidden">
+                        <div className="twinkling-stars absolute inset-0 z-0 pointer-events-none opacity-5"></div>
+                          <div className="relative z-10 text-center space-y-5">
+                             <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-blue-700">
+                                 Welcome to CodePulse
+                            </h1>
+                      <p className="text-xl font-semibold italic text-sky-500">
+                                Feel the heartbeat of Visualise DSA.</p>
               <p className="text-base sm:text-lg leading-relaxed text-black max-w-3xl mx-auto">
                 Struggling with complex DSA concepts? <span className="text-blue-800 font-semibold">CodePulse</span> turns tough algorithms into easy-to-understand visuals.
                 <br />
