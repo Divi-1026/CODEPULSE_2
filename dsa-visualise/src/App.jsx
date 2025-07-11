@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from 'react';
 import Login from './Pages/AuthPage';
-import Register from './Pages/Register';
-import AuthPage from "./Pages/AuthPage";
+
+import AuthPage from "./Pages/AuthPage";  
 
 import LinearSearchComponent from './Components/Searching/LinearSearch';
 import DFS from './Components/Graph/DFS';
@@ -22,6 +22,7 @@ import Euclian from './Components/MatheMatical/Euclian';
 import AvlTree from './Components/Tree/AvlTree';
 import BinarySearchComponent from './Components/Searching/BinarySearch';
 import ProtectedRoute from "./utils/ProtectedRoute";
+import ProfilePage from "./Components/Profile";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             {/* 🔒 Protected Routes */}
             <Route path="/header" element={<ProtectedRoute><Header /></ProtectedRoute>} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
             <Route path="/Bubble-Sort" element={<ProtectedRoute><BubbleSort /></ProtectedRoute>} />
             <Route path="/Merge-Sort" element={<ProtectedRoute><MergeSort /></ProtectedRoute>} />
             <Route path="/Insertion-Sort" element={<ProtectedRoute><InsertionSort /></ProtectedRoute>} />
@@ -55,7 +57,7 @@ function App() {
             <Route path="/greedy-algorithms" element={<ProtectedRoute><BubbleSort /></ProtectedRoute>} />
 
             {/* Default to register if unknown route */}
-            <Route path="*" element={<Navigate to="/register" />} />
+            <Route path="*" element={<Navigate to="/auth" />} />
           </Routes>
         </div>
       </Router>
