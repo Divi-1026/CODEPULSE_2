@@ -1,13 +1,68 @@
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Header({ onExplore }) {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("loginTime");
     navigate("/auth");
+  };
+
+  const searchRoutes = {
+    // Sorting
+    "bubble sort": "/Bubble-Sort",
+    "merge sort": "/Merge-Sort",
+    "insertion sort": "/Insertion-Sort",
+    "selection sort": "/Selection-Sort",
+
+    // Searching
+    "linear search": "/Linear_Search",
+    "binary search": "/Binary_Search",
+
+    // Trees
+    "avl tree": "/AVL-Tree",
+    "binary search tree": "/Binary-Search-Tree",
+    "bst": "/Binary-Search-Tree",
+    "tree traversal": "/Tree-Traversal",
+
+    // Graph
+    "dfs": "/DFS-Traversal",
+    "bfs": "/BFS-Traversal",
+    "graph algorithms": "/graph-algorithms",
+
+    // Mathematical
+    "euclian": "/mathematical-algorithms",
+    "gcd": "/mathematical-algorithms",
+    "euclidean": "/mathematical-algorithms",
+
+    // Misc
+    "searching": "/searching",
+    "sorting": "/sorting-algorithms",
+    "dp": "/dynamic-programming",
+    "dynamic programming": "/dynamic-programming",
+    "greedy": "/greedy-algorithms",
+    "backtracking": "/backtracking",
+    "tree": "/tree-data-structure"
+  };
+
+  const handleSearch = () => {
+    const query = searchQuery.toLowerCase().trim();
+    const matched = Object.keys(searchRoutes).find(key =>
+      query.includes(key)
+    );
+    if (matched) {
+      navigate(searchRoutes[matched]);
+    } else {
+      alert("Algorithm not found. Try keywords like 'Merge Sort', 'BST', 'DP' etc.");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") handleSearch();
   };
 
   return (
@@ -45,16 +100,19 @@ export default function Header({ onExplore }) {
 
         {/* Right Side: Search, Explore, Home, Logout */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-9 w-full md:w-auto justify-end">
-          
+
           {/* Search + Explore */}
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
             <input
               type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyPress}
               placeholder="Search algorithms..."
               className="w-full sm:w-60 h-11 px-4 bg-white text-[#333548] border border-[#b7adc8] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#480e4d] transition"
             />
             <button
-              onClick={onExplore}
+              onClick={handleSearch}
               className="h-11 text-white text-lg font-semibold rounded-md border-2 border-blue-600 ring-2 ring-blue-400/40
                 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700
                 hover:from-blue-700 hover:via-blue-700 hover:to-blue-700
@@ -64,7 +122,7 @@ export default function Header({ onExplore }) {
             </button>
           </div>
 
-          {/* Home + Logout + Profile */}
+          {/* Home + Logout + (optional Profile) */}
           <div className="flex flex-row items-center gap-2">
             <Link
               to="/"
@@ -79,8 +137,8 @@ export default function Header({ onExplore }) {
             >
               Logout
             </button>
-{/* 
-            <Link
+
+            {/* <Link
               to="/profile"
               className="w-10 h-10 flex items-center justify-center bg-gray-500 text-white rounded-full hover:bg-blue-700 transition"
               title="User Profile"

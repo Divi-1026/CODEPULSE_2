@@ -133,11 +133,11 @@ export default function LinearSearchComponent() {
   return (
     <>
   <Header />
-      <div className="grid grid-cols-5 gap-4 mt-55 md:mt-38">
+      <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
         <div className="col-span-1 h-[calc(100vh-6rem)] overflow-y-auto sticky top-24">
           <Nav />
         </div>
-        <div className="col-span-4 min-h-screen w-full bg-[#f8fafc] text-gray-900 px-10 py-6 rounded-xl">
+        <div className="col-span-4 min-h-screen w-full bg-[#f8fafc] text-gray-900 px-10 py-6 rounded-lg">
           <style>{`
             @keyframes fade-in {
               from { opacity: 0; transform: translateY(6px); }

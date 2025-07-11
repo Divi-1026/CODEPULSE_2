@@ -287,6 +287,7 @@
 import { useState } from "react";
 import { Graph } from "react-d3-graph";
 import Nav from "../NavBarSide/nav";
+import Header from "../Header";
 
 // Build adjacency list
 const build = (nodes, links, directed = false) => {
@@ -409,15 +410,15 @@ export default function DFS() {
     d3: { gravity: 0 },
   };
 
-  return (
-    <div className="grid grid-cols-5 gap-0 bg-[#313272]">
-      <div className="col-span-1">
-        <Nav />
-      </div>
-
-      <div className="p-4 w-full col-span-4">
+  return (<>
+     <Header />
+          <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
+            <div className="col-span-1 h-[calc(100vh-6rem)] overflow-y-auto sticky top-24">
+              <Nav />
+            </div>
+      <div className="w-full col-span-4">
         <div className="p-6 bg-white rounded-lg shadow-xl max-w-7xl mx-auto">
-          <h1 className="text-5xl font-bold text-center font-serif text-[#313272] mb-6">
+          <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-8 animate-textShine">
             DFS Visualizer
           </h1>
 
@@ -520,7 +521,7 @@ export default function DFS() {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 }
 

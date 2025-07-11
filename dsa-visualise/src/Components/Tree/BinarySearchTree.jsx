@@ -1,4 +1,4 @@
-
+import Header from "../Header";
 // import { useState } from "react";
 // import Nav from "../NavBarSide/nav";
 
@@ -227,7 +227,6 @@
 
 
 
-
 import { useState } from "react";
 import Nav from "../NavBarSide/nav";
 
@@ -242,13 +241,7 @@ export default function BinarySearchTree() {
   }
 
   function createNode(value) {
-    return {
-      value,
-      left: null,
-      right: null,
-      x: 0,
-      y: 0,
-    };
+    return { value, left: null, right: null, x: 0, y: 0 };
   }
 
   async function InsertWithVisualization(node, val) {
@@ -258,7 +251,6 @@ export default function BinarySearchTree() {
       await sleep(1000);
       return newNode;
     }
-
     setHighlightNode({ ...node });
     await sleep(1000);
 
@@ -267,7 +259,6 @@ export default function BinarySearchTree() {
     } else if (val > node.value) {
       node.right = await InsertWithVisualization(node.right, val);
     }
-
     return node;
   }
 
@@ -298,34 +289,32 @@ export default function BinarySearchTree() {
       node.value = successor.value;
       node.right = await RemoveWithVisualization(node.right, successor.value);
     }
-
     return node;
   }
 
-  function assignCoordinates(node, x, y, gap) {
+  const assignCoordinates = (node, x, y, gap) => {
     if (!node) return;
     node.x = x;
     node.y = y;
     assignCoordinates(node.left, x - gap, y + 80, gap / 1.7);
     assignCoordinates(node.right, x + gap, y + 80, gap / 1.7);
-  }
+  };
 
   const render = (node) => {
     if (!node) return null;
-
     return (
       <>
         {node.left && (
-          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke="#313272" strokeWidth={2} />
+          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke="#3f3f9d" strokeWidth={2} />
         )}
         {node.right && (
-          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke="#313272" strokeWidth={2} />
+          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke="#3f3f9d" strokeWidth={2} />
         )}
         <circle
           cx={node.x}
           cy={node.y}
           r="22"
-          fill={highlightNode?.value === node.value ? "#22c55e" : "#313272"}
+          fill={highlightNode?.value === node.value ? "#22c55e" : "#3f3f9d"}
           stroke="#fff"
           strokeWidth="2"
         />
@@ -400,60 +389,73 @@ export default function BinarySearchTree() {
 
   function InsertSimple(root, val) {
     if (root === null) return createNode(val);
-    if (val < root.value) {
-      root.left = InsertSimple(root.left, val);
-    } else if (val > root.value) {
-      root.right = InsertSimple(root.right, val);
-    }
+    if (val < root.value) root.left = InsertSimple(root.left, val);
+    else if (val > root.value) root.right = InsertSimple(root.right, val);
     return root;
   }
 
-  return (
-    <>
-      <div className="grid grid-cols-5 gap-4">
-        <div className="col-span-1">
-          <Nav />
-        </div>
-        <div className="col-span-4 min-h-screen bg-white text-black px-4 py-6 rounded-lg shadow-xl text-center">
-          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
-            <h1 className="text-4xl font-serif font-extrabold text-[#313272] drop-shadow-sm ml-4">Binary Search Tree Visualizer</h1>
-            <div className="flex flex-wrap gap-2">
-              <input
-                type="number"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Enter value"
-                className="px-7 py-1 bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 rounded-lg font-semibold w-52 text-white "
-              />
-              <button onClick={handleAddNode} className="bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 px-3 py-1 rounded-lg font-semibold text-white">
-                Insert Node
-              </button>
-              <button onClick={handleRemoveNode} className="bg-gradient-to-r from-red-700 to-red-800 hover:to-red-700 px-3 py-1 rounded-lg font-semibold text-white">
-                Delete Node
-              </button>
-              <button onClick={() => {
-                const val = Number(input);
-                if (isNaN(val)) return;
-                SearchNode(root, val);
-              }} className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:to-yellow-500 px-3 py-1 rounded-lg font-semibold text-white">
-                Search Node
-              </button>
-              <button onClick={GenerateRandom} className="bg-gradient-to-r from-green-600 to-green-700 hover:to-green-600 px-3 py-1 rounded-lg font-semibold text-white">
-                Generate Random Tree
-              </button>
+  return (<>
+    <Header />
+          <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
+            <div className="col-span-1 h-[calc(100vh-6rem)] overflow-y-auto sticky top-24">
+              <Nav />
             </div>
-          </div>
-          <hr className="h-1 bg-[#313272] border-none my-4"></hr>
-          <p className="text-l font-bold text-[#313272] mb-6 mt-4">
-            Each node in a Binary Search Tree has values in the left subtree smaller and right subtree greater than itself.
-          </p>
-          <div className="flex justify-center overflow-x-auto">
-            <svg width={1000} height={550} className="border border-slate-700 rounded-lg bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] shadow-md">
-              {render(tree)}
-            </svg>
-          </div>
+      <div className="col-span-4 min-h-screen bg-white px-6 rounded-lg py-6 text-black font-sans">
+        <div className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-6 animate-textShine">
+          Binary Search Tree Visualizer
+        </div>
+
+        <div className="flex flex-wrap gap-4 justify-center bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-6 rounded-xl shadow-lg border border-gray-300 mb-6">
+          <input
+            type="number"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter value"
+            className="px-4 py-2 rounded-lg border bg-white w-44 text-black shadow"
+          />
+          <button
+            onClick={handleAddNode}
+            className="px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 text-white rounded-lg shadow"
+          >
+            Insert
+          </button>
+          <button
+            onClick={handleRemoveNode}
+            className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:to-red-600 text-white rounded-lg shadow"
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => {
+              const val = Number(input);
+              if (!isNaN(val)) SearchNode(root, val);
+            }}
+            className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:to-yellow-500 text-white rounded-lg shadow"
+          >
+            Search
+          </button>
+          <button
+            onClick={GenerateRandom}
+            className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:to-green-600 text-white rounded-lg shadow"
+          >
+            Generate Tree
+          </button>
+        </div>
+
+        <p className="text-center text-md font-medium text-gray-700 mb-4">
+          In a BST, left children are smaller and right children are greater than the node.
+        </p>
+
+        <div className="flex justify-center overflow-x-auto">
+          <svg
+            width={1000}
+            height={550}
+            className="rounded-xl bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] border border-gray-400 shadow-xl"
+          >
+            {render(tree)}
+          </svg>
         </div>
       </div>
-    </>
+    </div> </>
   );
 }

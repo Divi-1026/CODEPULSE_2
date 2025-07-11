@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Tree from 'react-d3-tree';
 import Nav from '../NavBarSide/nav';
+import Header from '../Header';
 
 const defaultTreeData = {
   name: '50',
@@ -39,62 +40,50 @@ export default function Traversal() {
     }
   }, []);
 
-  function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   const pushWithDelay = async (value) => {
     setVisitedArray(prev => [...prev, value]);
-    setMessages(prev => [...prev, `Node ${value} is visited`]);
+    setMessages(prev => [...prev, `Visited node ${value}`]);
     await delay(1000 - speed * 9.5);
   };
 
-  async function postorder(node) {
-    if (!node) return;
-    if (node.children) {
-      for (const child of node.children) {
-        await postorder(child);
-      }
-    }
-    setVisitNode(node.name);
-    await pushWithDelay(node.name);
-  }
-
-  async function inorder(node) {
-    if (!node) return;
-    if (node.children && node.children[0]) {
-      await inorder(node.children[0]);
-    }
-    setVisitNode(node.name);
-    await pushWithDelay(node.name);
-    if (node.children && node.children[1]) {
-      await inorder(node.children[1]);
-    }
-  }
-
-  async function preorder(node) {
+  const preorder = async (node) => {
     if (!node) return;
     setVisitNode(node.name);
     await pushWithDelay(node.name);
     if (node.children) {
-      for (const child of node.children) {
-        await preorder(child);
-      }
+      for (const child of node.children) await preorder(child);
     }
-  }
+  };
 
-  async function levelorder(root) {
+  const inorder = async (node) => {
+    if (!node) return;
+    if (node.children && node.children[0]) await inorder(node.children[0]);
+    setVisitNode(node.name);
+    await pushWithDelay(node.name);
+    if (node.children && node.children[1]) await inorder(node.children[1]);
+  };
+
+  const postorder = async (node) => {
+    if (!node) return;
+    if (node.children) {
+      for (const child of node.children) await postorder(child);
+    }
+    setVisitNode(node.name);
+    await pushWithDelay(node.name);
+  };
+
+  const levelorder = async (root) => {
     if (!root) return;
     const queue = [root];
     while (queue.length > 0) {
       const node = queue.shift();
       setVisitNode(node.name);
       await pushWithDelay(node.name);
-      if (node.children) {
-        for (const child of node.children) queue.push(child);
-      }
+      if (node.children) for (const child of node.children) queue.push(child);
     }
-  }
+  };
 
   const handleStart = () => {
     setVisitedArray([]);
@@ -108,98 +97,135 @@ export default function Traversal() {
 
   const renderCustomNode = ({ nodeDatum }) => (
     <g>
-      <circle r={25} fill={visitNode === nodeDatum.name ? '#22c55e' : '#0284c7'} stroke="#fff" strokeWidth="1" />
-      <text  x={-12} y={6} fontSize={20} >{nodeDatum.name}</text>
+      <circle
+        r={25}
+        fill={visitNode === nodeDatum.name ? '#22c55e' : '#3b82f6'}
+        stroke="#fff"
+        strokeWidth="2"
+      />
+      <text
+        x="0"
+        y="6"
+        textAnchor="middle"
+        fontSize="18"
+        fontWeight="bold"
+        fill="#ffffff"
+        style={{
+          pointerEvents: 'none',
+          paintOrder: 'stroke',
+          strokeWidth: 0,  // Removes outline
+          stroke: 'none'   // Completely disables outline
+        }}
+      >
+        {nodeDatum.name}
+      </text>
     </g>
   );
+  
 
   return (
- 
-    <div className="grid grid-cols-5 gap-4 min-h-screen bg-[#313272] text-white">
-      <div className="col-span-1">
-        <Nav />
-      </div>
+    <>
+      <Header />
+      <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
+        <div className="col-span-1 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto">
+          <Nav />
+        </div>
 
-      <div className="col-span-4 px-6 py-4">
-        <h1 className="text-4xl font-serif font-bold text-white mb-2 text-center">Tree Traversal Visualizer</h1>
+        <div className="col-span-4 min-h-screen w-full bg-white text-black p-6 rounded-lg">
+          <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-8 animate-textShine">
+            Tree Traversal Visualizer
+          </h1>
 
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow">
-            <h3 className="text-2xl font-semibold mb-2 text-black text-center">Traversal Algorithms</h3>
-            <div className="flex flex-wrap gap-8">
-              {['Inorder', 'Preorder', 'Postorder', 'Levelorder'].map(type => (
-                <button
-                  key={type}
-                  className={`px-3 py-1 rounded-md font-medium border border-sky-400 ${Algo === type ? 'bg-sky-600' : 'bg-gradient-to-r from-blue-800 to-blue-900'} hover:ring hover:shadow-lg`}
-                  onClick={() => setAlgo(type)}>
-                  {type}
-                </button>
-              ))}
+          {/* Controls */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-gradient-to-r from-[#d7d3f1] to-[#f0f0ff] p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3 text-center">Choose Traversal</h3>
+              <div className="flex flex-wrap justify-center gap-4">
+                {['Inorder', 'Preorder', 'Postorder', 'Levelorder'].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setAlgo(type)}
+                    className={`px-4 py-2 rounded-lg text-white font-medium transition ${
+                      Algo === type ? 'bg-blue-800' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}>
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-[#d7d3f1] to-[#f0f0ff] p-6 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold mb-3 text-center">Animation Speed</h3>
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value={speed}
+                onChange={(e) => setSpeed(+e.target.value)}
+                className="w-full accent-blue-600"
+              />
             </div>
           </div>
 
-          <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow">
-            <h3 className="text-2xl font-semibold mb-2 text-center text-black">Animation Speed</h3>
-            <input
-              type="range"
-              min="1"
-              max="100"
-              value={speed}
-              className="w-full accent-sky-400"
-              onChange={(e) => setSpeed(+e.target.value)}
-            />
+          {/* Start & End Buttons */}
+          <div className="flex justify-center gap-6 mb-6">
+            <button
+              onClick={handleStart}
+              className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow">
+              Start Traversal
+            </button>
+            <button
+              onClick={() => {
+                setVisitedArray([]);
+                setMessages([]);
+                setVisitNode(null);
+              }}
+              className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow">
+              End
+            </button>
           </div>
-        
-        </div>
 
-        <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow flex  gap-2 items-center justify-center mb-4">
-          <button
-            className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md font-semibold w-[20%]"
-            onClick={handleStart}>Start
-          </button>
-          <button
-            className="bg-red-600 w-[20%] hover:bg-red-700 px-4 py-2 rounded-md font-semibold "
-            onClick={() => { setVisitedArray([]); setMessages([]); setVisitNode(null); }}>End</button>
-        </div>
-
-        <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] rounded-lg py-4 px-2 h-[500px] text-black " ref={treeContainer}>
-          {treeData && (
+          {/* Tree Visual */}
+          <div
+            ref={treeContainer}
+            className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] rounded-xl p-4 shadow-xl h-[500px] overflow-x-auto">
             <Tree
               data={treeData}
+              translate={translate}
               renderCustomNodeElement={renderCustomNode}
               orientation="vertical"
               pathFunc="diagonal"
-              translate={translate}
               zoomable={false}
-              nodeSize={{ x: 70, y: 110 }}
-             
+              nodeSize={{ x: 80, y: 120 }}
             />
-          )}
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="bg-[#8C8DC1] p-3 rounded-lg max-h-52 overflow-y-auto">
-            <h4 className="font-bold text-white mb-2">Traversal Log:</h4>
-            {messages.map((msg, i) => (
-              <div key={i} className="bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-2 rounded border-l-4 border-[#313272] mb-1 text-sm text-[#313272]">
-                {msg}
-              </div>
-            ))}
           </div>
 
-          <div className="bg-[#8C8DC1] p-3 rounded-lg">
-            <h4 className="font-bold text-white-300 mb-2">Visited Order:</h4>
-            <div className="flex gap-2 flex-wrap">
-              {visitedArray.map((val, idx) => (
-                <div key={idx} className="bg-[#313272] px-3 py-1 rounded-full text-sm font-semibold">
-                  {val}
+          {/* Logs & Visited Order */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="bg-[#8C8DC1] p-4 rounded-xl max-h-52 overflow-y-auto shadow">
+              <h4 className="text-white font-bold mb-2">Traversal Log:</h4>
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-2 rounded border-l-4 border-[#313272] mb-1 text-sm text-[#313272] shadow-sm">
+                  {msg}
                 </div>
               ))}
+            </div>
+
+            <div className="bg-[#8C8DC1] p-4 rounded-xl shadow">
+              <h4 className="text-white font-bold mb-2">Visited Order:</h4>
+              <div className="flex flex-wrap gap-2">
+                {visitedArray.map((val, idx) => (
+                  <div key={idx} className="bg-[#313272] px-3 py-1 rounded-full text-white text-sm font-bold shadow">
+                    {val}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-   
+    </>
   );
 }

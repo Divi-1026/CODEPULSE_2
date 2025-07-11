@@ -126,11 +126,11 @@ export default function BinarySearchComponent() {
   return (
     <>
       <Header />
-      <div className="grid grid-cols-5 gap-4 mt-55 md:mt-38">
+      <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
         <div className="col-span-1 h-[calc(100vh-6rem)] overflow-y-auto sticky top-24">
           <Nav />
         </div>
-        <div className="col-span-4 min-h-screen w-full bg-[#f8fafc] text-gray-900 px-10 py-6 rounded-xl">
+        <div className="col-span-4 min-h-screen w-full bg-[#f8fafc] text-gray-900 px-10 py-6 rounded-lg">
         <div className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-8 animate-textShine">
           Binary Search Visualizer
           </div> <div className="flex flex-wrap items-center gap-4 mb-8 bg-gradient-to-br from-[#d7d3f1] to-[#e7ecfc] w-full p-5 border border-slate-300  md:h-28 shadow-lg">
