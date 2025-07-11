@@ -114,22 +114,23 @@ export default function Traversal() {
   );
 
   return (
-    <div className="grid grid-cols-5 gap-4 min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+ 
+    <div className="grid grid-cols-5 gap-4 min-h-screen bg-[#313272] text-white">
       <div className="col-span-1">
         <Nav />
       </div>
 
       <div className="col-span-4 px-6 py-4">
-        <h1 className="text-2xl font-bold text-green-400 mb-2">Tree Traversal Visualizer</h1>
+        <h1 className="text-4xl font-serif font-bold text-white mb-2 text-center">Tree Traversal Visualizer</h1>
 
         <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-slate-700 p-4 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-2">Traversal Algorithms</h3>
-            <div className="flex flex-wrap gap-2">
+          <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow">
+            <h3 className="text-2xl font-semibold mb-2 text-black text-center">Traversal Algorithms</h3>
+            <div className="flex flex-wrap gap-8">
               {['Inorder', 'Preorder', 'Postorder', 'Levelorder'].map(type => (
                 <button
                   key={type}
-                  className={`px-3 py-1 rounded-md font-medium border border-sky-400 ${Algo === type ? 'bg-sky-600' : 'bg-slate-800'} hover:ring hover:shadow-lg`}
+                  className={`px-3 py-1 rounded-md font-medium border border-sky-400 ${Algo === type ? 'bg-sky-600' : 'bg-gradient-to-r from-blue-800 to-blue-900'} hover:ring hover:shadow-lg`}
                   onClick={() => setAlgo(type)}>
                   {type}
                 </button>
@@ -137,8 +138,8 @@ export default function Traversal() {
             </div>
           </div>
 
-          <div className="bg-slate-700 p-4 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-2 text-center">Animation Speed</h3>
+          <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow">
+            <h3 className="text-2xl font-semibold mb-2 text-center text-black">Animation Speed</h3>
             <input
               type="range"
               min="1"
@@ -151,7 +152,7 @@ export default function Traversal() {
         
         </div>
 
-        <div className="bg-slate-700 p-4 rounded-lg shadow flex  gap-2 items-center justify-center mb-4">
+        <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-4 rounded-lg shadow flex  gap-2 items-center justify-center mb-4">
           <button
             className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md font-semibold w-[20%]"
             onClick={handleStart}>Start
@@ -161,7 +162,7 @@ export default function Traversal() {
             onClick={() => { setVisitedArray([]); setMessages([]); setVisitNode(null); }}>End</button>
         </div>
 
-        <div className="bg-slate-800 rounded-lg py-4 px-2 h-[500px] text-black " ref={treeContainer}>
+        <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] rounded-lg py-4 px-2 h-[500px] text-black " ref={treeContainer}>
           {treeData && (
             <Tree
               data={treeData}
@@ -177,20 +178,20 @@ export default function Traversal() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="bg-gray-800 p-3 rounded-lg max-h-52 overflow-y-auto">
-            <h4 className="font-bold text-blue-300 mb-2">Traversal Log:</h4>
+          <div className="bg-[#8C8DC1] p-3 rounded-lg max-h-52 overflow-y-auto">
+            <h4 className="font-bold text-white mb-2">Traversal Log:</h4>
             {messages.map((msg, i) => (
-              <div key={i} className="bg-gray-700 p-2 rounded border-l-4 border-blue-500 mb-1 text-sm">
+              <div key={i} className="bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] p-2 rounded border-l-4 border-[#313272] mb-1 text-sm text-[#313272]">
                 {msg}
               </div>
             ))}
           </div>
 
-          <div className="bg-gray-800 p-3 rounded-lg">
-            <h4 className="font-bold text-blue-300 mb-2">Visited Order:</h4>
+          <div className="bg-[#8C8DC1] p-3 rounded-lg">
+            <h4 className="font-bold text-white-300 mb-2">Visited Order:</h4>
             <div className="flex gap-2 flex-wrap">
               {visitedArray.map((val, idx) => (
-                <div key={idx} className="bg-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+                <div key={idx} className="bg-[#313272] px-3 py-1 rounded-full text-sm font-semibold">
                   {val}
                 </div>
               ))}
@@ -199,5 +200,6 @@ export default function Traversal() {
         </div>
       </div>
     </div>
+   
   );
 }

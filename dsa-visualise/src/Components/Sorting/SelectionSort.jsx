@@ -1,7 +1,7 @@
 import { useState } from "react"; import Nav from "../NavBarSide/nav";
 function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
     const baseClasses = "w-12 rounded flex justify-center items-end relative transition-all duration-500 ease-in-out shadow-md hover:shadow-xl hover:scale-105";
-    let bgColor = "bg-sky-400";
+    let bgColor = "bg-[#8C8DC1]";
     if (index === minIndex) bgColor = "bg-red-500 animate-pulse";
     else if (index === currentIndex) bgColor = "bg-green-500 ";
     else if (index === comparingIndex)
@@ -95,21 +95,21 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
        <div className="grid grid-cols-5 gap-4">
             <div className="col-span-1">
             <Nav></Nav> </div>
-      <div className=" col-span-4 min-h-screen w-full  bg-gray-900 text-white p-8 font-sans">
-        <div className="flex flex-wrap items-center gap-4 mb-6  bg-slate-800/80 md:h-25 w-full rounded-xl p-4 border-slate-500 border-1">
+      <div className=" col-span-4 min-h-screen w-full  bg-white text-black p-8 font-sans">
+        <div className="flex flex-wrap items-center gap-4 mb-6   bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1]   rounded-xl p-10 border-white border-1">
           <label className="flex items-center gap-2">
-            <strong>Size:</strong>
+            <strong className="text-lg">Size:</strong>
             <input
               type="number"
               value={size}
               disabled={isSorting}
               onChange={(e) => setSize(Math.max(5, Math.min(200, +e.target.value)))}
-              className="w-16 px-2 py-1 rounded border border-gray-600 bg-gray-800 text-white"
+              className="w-16 px-2 py-1 rounded border border-gray-600 bg-white text-black"
             />
           </label>
   
           <label className="flex items-center gap-2">
-            <strong>Speed: {speed}%</strong>
+            <strong className="text-lg">Speed: {speed}%</strong>
             <input
               type="range"
               min="0"
@@ -124,7 +124,7 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
           <button
             onClick={() => setShow((prev) => !prev)}
             disabled={isSorting}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg transition-all duration-300"
+            className="px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 rounded-lg shadow-lg transition-all duration-300 text-white"
           >
             {show ? "Hide Custom Input" : "Enter Custom Array"}
           </button>
@@ -132,7 +132,7 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
           <button
             onClick={generateRandomArray}
             disabled={isSorting}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg shadow-lg transition-all duration-300"
+            className="px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-700 rounded-lg shadow-lg transition-all duration-300 text-white"
           >
             Generate Random Array
           </button>
@@ -140,7 +140,7 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
           <button
             onClick={selectionSort}
             disabled={isSorting || customArray.length === 0}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg shadow-lg transition-all duration-300"
+            className="px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 rounded-lg shadow-lg transition-all duration-300 text-white"
           >
             Start Selection Sort
           </button>
@@ -155,12 +155,12 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
               value={inputValue}
               disabled={isSorting}
               onChange={(e) => setInputValue(e.target.value)}
-              className="w-full px-4 py-2 rounded border border-gray-600 bg-gray-800 text-white text-lg"
+              className="w-full px-4 py-2 rounded border border-purple-500 bg-purple-100  text-lg"
             />
             <button
               onClick={handleSubmit}
               disabled={isSorting}
-              className="mt-4 px-5 py-2 bg-green-500 hover:bg-green-600 rounded-lg shadow-lg text-lg transition-all duration-300"
+              className="mt-4 px-5 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-lg text-lg transition-all duration-300 text-white"
             >
               Submit
             </button>
@@ -169,8 +169,8 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
   
         {customArray.length > 0 && (
           <> 
-            <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full mb-6 border-slate-500 border-1 animate-fade-in">
-              <h2 className="text-2xl font-semibold mb-4 text-center text-white drop-shadow-md">Your Array:</h2>
+            <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] p-8 rounded-2xl shadow-2xl w-full mb-6 border-slate-500 border-1 animate-fade-in">
+              <h2 className="text-2xl font-semibold mb-4 text-center text-black drop-shadow-md">Your Array:</h2>
               <div className="flex justify-center overflow-x-auto">
                 <div className="flex items-end gap-2 py-8 h-[400px]">
                   {customArray.map((value, index) => (
@@ -189,15 +189,15 @@ function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
   
             <div
               id="messages-container"
-              className="max-h-48 overflow-y-auto border border-gray-700 rounded p-4 space-y-3 bg-gray-800 animate-fade-in"
+              className="max-h-48 overflow-y-auto border border-gray-700 rounded p-4 space-y-3 bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] animate-fade-in"
             >
               {messages.length === 0 && (
-                <p className="text-gray-400 text-center italic">Swap messages will appear here.</p>
+                <p className="text-black text-center italic">Swap messages will appear here.</p>
               )}
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className="border-l-4 border-cyan-400 bg-cyan-900/40 p-3 rounded shadow text-green-300 font-bold font-mono animate-pulse"
+                  className="border-l-4 border-[#313272] bg-[#8C8DC1] p-3 rounded shadow text-white font-bold font-mono animate-pulse"
                 >
                   {msg}
                 </div>
