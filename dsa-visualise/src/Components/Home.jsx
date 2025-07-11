@@ -115,6 +115,7 @@ export default function Home() {
       <Header onExplore={() => setshow(false)} />
              <div className="md:mt-48 sm:mt-56 px-6">
                    {show && (
+                    
                        <div className="font-sans relative p-6 md:p-10 rounded-2xl mb-10 shadow-md border border-[#d6cbd3] bg-gradient-to-r from-[#ecf2f4] via-[#f9f9f9] to-[#e7eef0] overflow-hidden">
                         <div className="twinkling-stars absolute inset-0 z-0 pointer-events-none opacity-5"></div>
                           <div className="relative z-10 text-center space-y-5">
