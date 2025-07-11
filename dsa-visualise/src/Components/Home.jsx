@@ -180,3 +180,6 @@ hover:scale-105 hover:shadow-[0_0_30px_rgba(96,165,250,0.6)]"
     </>
   );
 }
+
+
+
