@@ -50,7 +50,7 @@ export default function BFS() {
           parents[n] = node;
           colors[n] = "orange";
           const key = `${node}-${n}`;
-          links[key] = "#facc15";
+          links[key] = "red";
         }
       });
 
@@ -112,22 +112,22 @@ export default function BFS() {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-0 bg-[#273425]">
+    <div className="grid grid-cols-5 gap-0 bg-[#313272]">
                     <div className="col-span-1">
                     <Nav></Nav> </div>
     {/* Right Content */}
     <div className="p-4   w-full col-span-4">
-      <div className=" p-6 bg-[#364729] rounded-lg shadow-xl max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-[#99dc74] mb-6">
+      <div className=" p-6 bg-white rounded-lg shadow-xl max-w-7xl mx-auto">
+        <h1 className="text-5xl font-bold text-center font-serif text-[#313272] mb-6">
           BFS Visualizer
         </h1>
   
         {/* Controls */}
-        <div className="bg-gradient-to-br from-[#add3c4] to-[#a1bf81] flex flex-wrap border-1 border-white justify-center gap-4 md:h-25 bg-[#81a29c] p-4  text-black rounded mb-6">
+        <div className=" bg-gradient-to-r from-[#d7d3f1] to-[#d7d3f1] flex flex-wrap border-1 border-white justify-center gap-4 md:h-25 bg-[#81a29c] p-4  text-black rounded mb-6">
           <div className="flex items-center gap-2">
             <label className="font-semibold text-lg">Start :</label>
             <input placeholder="A"
-              className="w-16 h-8 px-2 py-1 rounded border border-gray-600 bg-[#7baa80] "
+              className="w-16 h-8 px-2 py-1 rounded border border-gray-600 bg-white text-cen"
               value={startNode}
               onChange={(e) => setStartNode(e.target.value)}
             />
@@ -179,14 +179,14 @@ export default function BFS() {
   
           <button
             onClick={() => runBFS(startNode)}
-            className="bg-[#2e16a8] hover:bg-[#a81616] ml-8 border-1 w-18 border-black text-white px-4 py-2 rounded md:h-10 md:mt-3"
+            className="bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 ml-8 border-1 w-18 border-black text-white px-4 py-2 rounded md:h-10 md:mt-3"
           >
             Start
           </button>
         </div>
   
        
-        <div className="bg-gradient-to-br from-[#202b18]  to-[#0e130a] rounded-lg p-4 border-1 flex justify-center items-center">
+        <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] rounded-lg p-4 border-1 flex justify-center items-center">
           <div className="w-[700px] h-[450px]">
             <Graph id="graph-id" data={graphData} config={config} />
           </div>
@@ -194,13 +194,13 @@ export default function BFS() {
   
         
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-          <div className="bg-[#78a343] p-4 rounded">
-            <h2 className="font-semibold text-black text-lg mb-3">BFS Order</h2>
+          <div className="border-[#313272] bg-[#8C8DC1] p-4 rounded">
+            <h2 className="font-semibold text-white text-2xl mb-3">BFS Order</h2>
             <div className="flex flex-wrap gap-2">
               {visitedOrder.map((n, i) => (
                 <span
                   key={i}
-                  className="bg-[#0e079b] text-white border-1 border-cyan-500 font-semibold px-2 py-1 rounded"
+                  className="bg-[#313272] text-white border-1 border-[#313272] font-semibold px-2 py-1 rounded"
                 >
                   {n}
                 </span>
@@ -208,11 +208,11 @@ export default function BFS() {
             </div>
           </div>
   
-          <div className="bg-[#78a343] p-4 rounded">
-            <h2 className="font-semibold text-black text-lg mb-3">
+          <div className="border-[#313272] bg-[#8C8DC1] p-4 rounded">
+            <h2 className="font-semibold text-white text-2xl mb-3">
               Parent Relationships
             </h2>
-            <ul className="list-disc list-inside text-blue-800 font-semibold">
+            <ul className="list-disc list-inside text-[#313272] font-semibold">
               {Object.entries(parentMap).map(([child, parent]) => (
                 <li key={child}>
                   {child} ← {parent}
@@ -284,3 +284,11 @@ const largeGraph = {
     { source: "A", target: "G" },
   ],
 };
+
+
+
+
+
+
+
+

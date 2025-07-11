@@ -121,16 +121,16 @@ export default function AvlTree() {
     return (
       <>
         {node.left && (
-          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke="#60a5fa" strokeWidth={2} />
+          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke="#313272" strokeWidth={2} />
         )}
         {node.right && (
-          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke="#60a5fa" strokeWidth={2} />
+          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke="#313272" strokeWidth={2} />
         )}
         <circle
           cx={node.x}
           cy={node.y}
           r="22"
-          fill={highlightNode === node ? "#22c55e" : "#0ea5e9"}
+          fill={highlightNode === node ? "#22c55e" : "#313272"}
           stroke="#fff"
           strokeWidth="2"
         />
@@ -149,25 +149,26 @@ export default function AvlTree() {
         <div className="col-span-1">
           <Nav />
         </div>
-        <div className="col-span-4 min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white px-4 py-6 rounded-lg shadow-xl">
+        <div className="col-span-4 min-h-screen bg-white text-black px-4 py-6 rounded-lg shadow-xl text-center">
           <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
-            <h1 className="text-2xl font-extrabold text-green-400 drop-shadow-sm">AVL Tree Visualizer</h1>
-            <div className="flex flex-wrap gap-2">
+            <h1 className="text-4xl font-serif font-extrabold text-[#313272] drop-shadow-sm ml-65 ">AVL Tree Visualizer</h1>
+            <div className="flex flex-wrap gap-2 ">
               <input
                 type="number"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Enter value"
-                className="px-3 py-1 bg-gray-700 rounded-lg font-semibold w-52 text-white"
+                className="px-3 py-1   bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 rounded-lg font-semibold w-52 text-white mr-8"
               />
-              <button onClick={handleAddNode} className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg font-semibold">
+              <button onClick={handleAddNode} className=" bg-gradient-to-r from-blue-800 to-blue-900 hover:to-blue-800 px-3 py-1 rounded-lg font-semibold text-white">
                 Insert Node
               </button>
             </div>
           </div>
-          <p className="text-sm text-gray-300 mb-4 mt-2">AVL Tree: A self-balancing Binary Search Tree where the difference in height of left and right subtrees is at most 1.</p>
+          <hr className="h-1 bg-[#313272] border-none my-4"></hr>
+          <p className="text-l font-bold text-[#313272] mb-6 mt-4">AVL Tree: A self-balancing Binary Search Tree where the difference in height of left and right subtrees is at most 1.</p>
           <div className="flex justify-center overflow-x-auto">
-            <svg width={1000} height={600} className="border border-slate-700 rounded-lg bg-slate-800 shadow-md">
+            <svg width={1000} height={600} className="border border-slate-700 rounded-lg  bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] shadow-md">
               {render(tree)}
             </svg>
           </div>
@@ -176,3 +177,10 @@ export default function AvlTree() {
     </>
   );
 } 
+
+
+
+
+
+
+
