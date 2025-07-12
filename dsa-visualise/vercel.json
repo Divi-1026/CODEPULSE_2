@@ -1,6 +1,1 @@
-// dsa-visualise/vercel.json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
+
