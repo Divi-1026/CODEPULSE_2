@@ -26,7 +26,7 @@ const AuthPage = () => {
     const endpoint = isLogin ? "login" : "register";
 
     try {
-      const res = await axios.post(`/auth/${endpoint}`, form);
+      const res = await axios.post(`/api/auth/${endpoint}`, form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("loginTime", Date.now());
       navigate("/");
