@@ -1,7 +1,7 @@
 import Header from "../Header";
 import { useState, useRef } from "react";
 import Nav from "../NavBarSide/nav";
-
+import CompletionCheckbox from "../ProblemCheckBox";
 function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex }) {
   const baseClasses = "w-12 rounded flex justify-center items-end relative transition-all duration-500 ease-in-out shadow-md hover:shadow-xl hover:scale-105";
   let bgColor = "bg-[#8C8DC1]";
@@ -256,6 +256,13 @@ export default function Selection() {
           </>
         )}
       </div>
+       <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+        <div className="flex flex-col items-center space-y-3">
+      
+          <CompletionCheckbox problemTitle="Selection Sort" />
+        </div>
+      </div>
+      
     </div>
     </>
   );

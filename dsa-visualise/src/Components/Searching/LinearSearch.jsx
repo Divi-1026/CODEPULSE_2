@@ -1,7 +1,7 @@
-// LinearSearchComponent.jsx
 import { useState } from "react";
 import Nav from "../NavBarSide/nav";
 import Header from "../Header";
+import CompletionCheckbox from "../ProblemCheckBox";
 
 function ArrayCard({ value, index, isCurrent, isFound }) {
   const baseClasses = "flex flex-col items-center justify-center w-16 h-16 text-lg font-bold border-2 rounded-xl transition-all duration-300 shadow-lg";
@@ -54,89 +54,80 @@ function ArrayCard({ value, index, isCurrent, isFound }) {
 export default function LinearSearchComponent() {
   const [size, setSize] = useState(10);
   const [speed, setSpeed] = useState(50);
-  const [show, setShow] = useState(false);
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [customArray, setCustomArray] = useState([]);
+  const [array, setArray] = useState([]);
   const [target, setTarget] = useState("");
   const [currentIndex, setCurrentIndex] = useState(null);
   const [foundIndex, setFoundIndex] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   const generateRandomArray = () => {
-    const arr = Array.from({ length: size }, () => Math.floor(Math.random() * 100) + 1);
-    setCustomArray(arr);
-    setFoundIndex(null);
-    setCurrentIndex(null);
-    setShow(false);
+    const newArray = Array.from({ length: size }, () => Math.floor(Math.random() * 100) + 1);
+    setArray(newArray);
+    resetSearch();
   };
 
-  const handleSubmit = () => {
-    const array = inputValue
+  const handleCustomArraySubmit = () => {
+    const newArray = inputValue
       .split(",")
       .map((item) => parseInt(item.trim(), 10))
       .filter((item) => !isNaN(item));
-    setCustomArray(array);
-    setFoundIndex(null);
+    setArray(newArray);
+    resetSearch();
+  };
+
+  const resetSearch = () => {
     setCurrentIndex(null);
-    setShow(false);
+    setFoundIndex(null);
+    setMessages([]);
+  };
+
+  const addMessage = (text, type) => {
+    const newMessage = {
+      id: Date.now(),
+      text,
+      type,
+      timestamp: new Date().toLocaleTimeString()
+    };
+    setMessages(prev => [newMessage, ...prev].slice(0, 10));
   };
 
   const handleLinearSearch = async () => {
-    const main = document.getElementById("content");
-    const targ = parseInt(target.trim(), 10);
-    if (isNaN(targ)) return;
+    const targetValue = parseInt(target.trim(), 10);
+    if (isNaN(targetValue)) {
+      addMessage("Please enter a valid number to search", "error");
+      return;
+    }
 
-    main.innerHTML = "";
-    setFoundIndex(null);
-    setCurrentIndex(null);
-    const createBox = (text, color, icon) => {
-      const box = document.createElement("div");
-      box.textContent = icon ? `${icon} ${text}` : text;
-      box.className = `
-        w-full
-        p-4
-        mt-3
-        text-lg
-        font-semibold
-        rounded-xl
-        border-l-8
-        shadow-xl
-        bg-gradient-to-br from-[#f4f9f8] to-[#e9f1f2]
-        ${color}
-        animate-fade-in
-      `;
-      box.style.boxShadow = `0 0 15px 3px rgba(255,255,255,0.15)`;
-      return box;
-    };
+    resetSearch();
+    addMessage(`Starting search for ${targetValue}...`, "info");
 
-    for (let i = 0; i < customArray.length; i++) {
+    for (let i = 0; i < array.length; i++) {
       setCurrentIndex(i);
-      const searchingMsg = createBox(`${targ} is searching at index ${i}`, "border-blue-400 text-blue-900", "🔍");
-      main.appendChild(searchingMsg);
+      addMessage(`Checking index ${i} (value: ${array[i]})`, "searching");
       await new Promise((res) => setTimeout(res, 1000 - speed * 9.5));
 
-      if (customArray[i] === targ) {
-        const foundMsg = createBox(`${targ} is found at index ${i}`, "border-green-500 text-green-700", "✅");
-        foundMsg.classList.add("shadow-[0_0_15px_rgba(34,197,94,0.6)]");
-        main.appendChild(foundMsg);
+      if (array[i] === targetValue) {
         setFoundIndex(i);
         setCurrentIndex(null);
+        addMessage(`Found ${targetValue} at index ${i}!`, "success");
         return;
       }
     }
 
-    const notFoundMsg = createBox(`${targ} is not Found`, "border-red-500 text-red-600", "❌");
-    notFoundMsg.classList.add("shadow-[0_0_15px_rgba(248,113,113,0.6)]");
-    main.appendChild(notFoundMsg);
     setCurrentIndex(null);
+    addMessage(`${targetValue} not found in the array`, "error");
   };
 
   return (
     <>
-  <Header />
+      <Header />
       <div className="grid grid-cols-5 gap-4 mt-48 md:mt-36">
         <div className="col-span-1 h-[calc(100vh-6rem)] overflow-y-auto sticky top-24">
           <Nav />
         </div>
+        
         <div className="col-span-4 min-h-screen w-full bg-[#f8fafc] text-gray-900 px-10 py-6 rounded-lg">
           <style>{`
             @keyframes fade-in {
@@ -147,17 +138,19 @@ export default function LinearSearchComponent() {
               animation: fade-in 0.4s ease-out;
             }
           `}</style>
+          
           <div className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-8 animate-textShine">
-          Linear Search Visualizer
+            Linear Search Visualizer
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 mb-8 bg-gradient-to-br from-[#d7d3f1] to-[#e7ecfc] w-full p-5 border border-slate-300  md:h-28 shadow-lg">
+          {/* Controls Section */}
+          <div className="flex flex-wrap items-center gap-4 mb-8 bg-gradient-to-br from-[#d7d3f1] to-[#e7ecfc] w-full p-5 border border-slate-300 md:h-28 shadow-lg">
             <label className="flex items-center gap-2">
               <strong>Size:</strong>
               <input
                 type="number"
                 value={size}
-                onChange={(e) => setSize(Math.max(5, Math.min(200, +e.target.value)))}
+                onChange={(e) => setSize(Math.max(5, Math.min(20, +e.target.value)))}
                 className="w-16 px-2 py-1 rounded font-semibold bg-white text-sky-700 border border-slate-400"
               />
             </label>
@@ -166,7 +159,7 @@ export default function LinearSearchComponent() {
               <strong>Speed: {speed}%</strong>
               <input
                 type="range"
-                min="0"
+                min="10"
                 max="100"
                 value={speed}
                 onChange={(e) => setSpeed(+e.target.value)}
@@ -175,10 +168,10 @@ export default function LinearSearchComponent() {
             </label>
 
             <button
-              onClick={() => setShow((prev) => !prev)}
+              onClick={() => setShowCustomInput(!showCustomInput)}
               className="px-4 py-2 font-medium text-white rounded-lg bg-gradient-to-r from-blue-800 to-blue-900 hover:brightness-110 shadow-md"
             >
-              {show ? "Hide Custom Input" : "Enter Custom Array"}
+              {showCustomInput ? "Hide Custom Input" : "Enter Custom Array"}
             </button>
 
             <button
@@ -189,7 +182,7 @@ export default function LinearSearchComponent() {
             </button>
           </div>
 
-          {show && (
+          {showCustomInput && (
             <div className="mb-6">
               <p className="mb-2 text-lg font-semibold text-slate-700">Enter array values (comma separated):</p>
               <input
@@ -200,7 +193,7 @@ export default function LinearSearchComponent() {
                 className="w-full text-black px-4 py-2 rounded-lg border border-purple-500 bg-purple-100 text-lg"
               />
               <button
-                onClick={handleSubmit}
+                onClick={handleCustomArraySubmit}
                 className="mt-4 px-6 py-2 bg-yellow-400 hover:bg-yellow-500 hover:text-white rounded-lg shadow-lg text-lg"
               >
                 Submit
@@ -208,7 +201,7 @@ export default function LinearSearchComponent() {
             </div>
           )}
 
-          {customArray.length > 0 && (
+          {array.length > 0 && (
             <>
               <div className="flex items-center gap-3 mb-4">
                 <input
@@ -226,10 +219,10 @@ export default function LinearSearchComponent() {
                 </button>
               </div>
 
-              <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] min-h-[300px] border border-slate-200 p-8  shadow-xl">
+              <div className="bg-gradient-to-br from-[#c9c7c4] to-[#eeeff2] min-h-[300px] border border-slate-200 p-8 shadow-xl">
                 <h2 className="text-3xl font-bold mb-6 text-center text-sky-900">Array Visualization</h2>
                 <div className="flex flex-wrap gap-6 justify-center py-8 items-center">
-                  {customArray.map((value, index) => (
+                  {array.map((value, index) => (
                     <ArrayCard
                       key={index}
                       value={value}
@@ -239,11 +232,40 @@ export default function LinearSearchComponent() {
                     />
                   ))}
                 </div>
-                <div id="content" className="mt-6 space-y-3"></div>
+                <div className="mt-6 space-y-3">
+                  {messages.length === 0 ? (
+                    <p className="text-slate-500 text-center py-4">Search log will appear here...</p>
+                  ) : (
+                    messages.map((msg) => (
+                      <div 
+                        key={msg.id}
+                        className={`p-3 rounded-lg border-l-4 ${
+                          msg.type === "success" 
+                            ? "bg-green-50 border-green-500 text-green-800"
+                            : msg.type === "error"
+                            ? "bg-red-50 border-red-500 text-red-800"
+                            : "bg-blue-50 border-blue-500 text-blue-800"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span>{msg.text}</span>
+                          <span className="text-xs opacity-70">{msg.timestamp}</span>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </>
           )}
         </div>
+        <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+  <div className="flex flex-col items-center space-y-3">
+
+    <CompletionCheckbox problemTitle="Linear_Search" />
+  </div>
+</div>
+
       </div>
     </>
   );

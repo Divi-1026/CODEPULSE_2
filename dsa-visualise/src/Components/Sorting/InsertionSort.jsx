@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Nav from "../NavBarSide/nav";
 import Header from "../Header";
+import CompletionCheckbox from "../ProblemCheckBox";
 function ArrayBar({ value, index, currentIndex, minIndex, comparingIndex, nextcomparing }) {
   const baseClasses =
     "w-12 rounded flex justify-center items-end relative transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:scale-105";
@@ -261,6 +262,12 @@ export default function InsertionSort() {
           </>
         )}
       </div>
+      <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+              <div className="flex flex-col items-center space-y-3">
+            
+                <CompletionCheckbox problemTitle="Insertion Sort" />
+              </div>
+            </div>
     </div>
     </>
   );

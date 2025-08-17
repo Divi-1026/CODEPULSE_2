@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Nav from "../NavBarSide/nav";
 import Header from "../Header";
+import CompletionCheckbox from "../ProblemCheckBox";
 
 function ArrayCard({ value, index, isCurrent, isFound }) {
   const baseClasses = "flex flex-col items-center justify-center w-16 h-16 text-lg font-bold border-2 rounded-xl transition-all duration-300 shadow-lg";
@@ -226,6 +227,13 @@ className="px-4 py-2 font-medium text-white rounded-lg bg-gradient-to-r from-blu
             </>
           )}
         </div>
+        <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+  <div className="flex flex-col items-center space-y-3">
+
+    <CompletionCheckbox problemTitle="Binary_Search" />
+  </div>
+</div>
+
       </div>
     </>
   );

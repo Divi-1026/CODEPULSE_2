@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Nav from "../NavBarSide/nav";
 import Header from "../Header";
+import CompletionCheckbox from "../ProblemCheckBox";
 
 function ArrayBar({ value, index, currentIndices, comparingIndices, mergedIndices }) {
   const baseClasses =
@@ -243,6 +244,12 @@ export default function MergeSort() {
             </>
           )}
         </div>
+        <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+              <div className="flex flex-col items-center space-y-3">
+            
+                <CompletionCheckbox problemTitle="Merge Sort" />
+              </div>
+            </div>
       </div>
     </>
   );
