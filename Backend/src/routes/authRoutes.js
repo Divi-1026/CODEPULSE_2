@@ -1,9 +1,12 @@
-// routes/authRoutes.js
-const express = require("express");
-const router = express.Router();
-const { registerUser, loginUser } = require("../controllers/authController");
+const express = require('express');
+const authRouter = express.Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+const userMiddleware = require("../midddleware/authMiddleware"); // ✅ Fixed typo in folder name
+const { register, login, logout } = require('../controllers/authController');
 
-module.exports = router;
+// Routes
+authRouter.post('/register', register);
+authRouter.post('/login', login);
+authRouter.post('/logout', userMiddleware, logout);
+
+module.exports = authRouter;

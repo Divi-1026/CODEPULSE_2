@@ -1,49 +1,94 @@
-const User = require('../models/User');
-const path = require('path'); // ✅ Don't forget this line
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
-const bcrypt = require('bcryptjs');
+const redisClient = require("../config/redis");
+
+const User = require("../models/User");
+const validate = require('../utils/validators');
+const bcrypt = require('bcrypt');
+require('dotenv').config({ path: __dirname + '/../../.env' });
 const jwt = require('jsonwebtoken');
- console.log(process.env.JWT_SECRET);
- exports.registerUser = async (req, res) => {
-    try {
-      const { name, email, password } = req.body;
-      
-      if (!name || !email || !password) {
-        return res.status(400).json({ msg: "Please fill all fields" });
-      }
-       
-      let user = await User.findOne({ email });
-      if (user) return res.status(400).json({ msg: "User already exists" });
-  console.log(req.body)
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user = await User.create({ name, email, password: hashedPassword });
-  
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-  
-      res.status(201).json({
-        token,
-        user: { id: user._id, name: user.name, email: user.email },
-      });
-    } catch (err) {
-      console.error("Registration Error:", err.message);
-      res.status(500).json({ msg: "Server Error", error: err.message });
-    }
-  };
-exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+
+// Register function
+const register = async (req, res) => {
   try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
+    validate(req.body);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+    const { name,password, email } = req.body;
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+    // Hash password
+    req.body.password = await bcrypt.hash(password, 10);
+    
+    // Create user in DB
+    const u1 = await User.create(req.body);
+
+    // Create token using u1._id (not model name)
+    const token = jwt.sign({ _id: u1._id, email:email }, process.env.JWT_SECRET, {
+      expiresIn: 60 * 60,
     });
+    req.result=u1._id;
+    const reply={
+      name:u1.name,
+      email:u1.email,
+      _id:u1._id
+    }
+    req.result=u1._id;
+    console.log(reply);
+    res.cookie('token', token, { maxAge: 60 * 60 * 1000 });
+    res.status(200).json({
 
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+      user:reply,
+      message:"Registered Successfully"
+    });
   } catch (err) {
-    res.status(500).json({ msg: "Server Error", error: err.message });
+    res.status(400).send("Error: " + err.message);
   }
 };
+
+// Login function
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) throw new Error("Invalid Credentials");
+
+    const user = await User.findOne({ email });
+    if (!user) throw new Error("User not found");
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw new Error("Invalid Credentials");
+    req.result=user._id;
+const reply={
+  name:user.name,
+  email:user.email,
+  _id:user._id
+}
+    const token = jwt.sign({ _id: user._id, email:email}, process.env.JWT_SECRET, {
+      expiresIn: 60 * 60,
+    });
+
+    res.cookie('token', token, { maxAge: 60 * 60 * 1000 });
+    res.status(200).json({
+
+      user:reply,
+      message:"Loggin Successfully"
+    });
+  } catch (err) {
+    res.status(400).send("Error: " + err.message);
+  }
+};
+const logout=async(req,res)=>{
+  try{
+    //validate the token
+    const {token}=req.cookies;
+    const  payload=jwt.decode(token);
+    await redisClient.set(`token:${token}`,"Block");
+    await redisClient.expireAt(`token:${token}`,payload.exp);
+    res.cookie("token",null,{expires:new Date(Date.now())});
+    res.send("Logged Out Successfully");
+    // token add in redis to block
+    //cookies ko clear kar dena
+  }
+  catch{
+res.status(401).send("Invalid")
+  }
+}
+
+module.exports = { register, login ,logout };
