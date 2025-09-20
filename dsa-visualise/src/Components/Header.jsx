@@ -1,8 +1,11 @@
 import { useNavigate, Link } from "react-router-dom";
+import { useTheme } from "../utils/ThemeProvider";
 import { FaSearch, FaHome, FaChevronDown, FaUserCircle } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
+import { FiSun, FiMoon } from "react-icons/fi";
 
 export default function Header({ onExplore }) {
+  const { theme, Toggletheme } = useTheme();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -166,7 +169,7 @@ export default function Header({ onExplore }) {
     }
 
     const filtered = Object.keys(searchRoutes)
-      .filter(key => key.includes(searchQuery.toLowerCase()))
+      .filter((key) => key.includes(searchQuery.toLowerCase()))
       .sort((a, b) => a.length - b.length)
       .slice(0, 5);
 
@@ -177,7 +180,7 @@ export default function Header({ onExplore }) {
     const query = searchQuery.toLowerCase().trim();
     if (!query) return;
 
-    const matched = Object.keys(searchRoutes).find(key =>
+    const matched = Object.keys(searchRoutes).find((key) =>
       query.includes(key)
     );
 
@@ -201,209 +204,158 @@ export default function Header({ onExplore }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-
-          {/* Branding */}
-          <Link to="/" className="flex-shrink-0 flex items-center">
-            <div className="flex items-center">
-              <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                CODEPULSE
-              </span>
-              <span className="ml-2 text-sm font-medium bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
-                BETA
-              </span>
-            </div>
-          </Link>
-
-          {/* Search Bar */}
-          <div className="flex-1 max-w-xl mx-6 relative" ref={searchRef}>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setShowSuggestions(true);
-                }}
-                onKeyDown={handleKeyPress}
-                onFocus={() => setShowSuggestions(true)}
-                placeholder="Search algorithms (e.g. 'Bubble Sort', 'DFS')..."
-                className="block w-full pl-10 pr-3 py-3 text-base border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => {
-                    setSearchQuery("");
-                    setShowSuggestions(false);
-                  }}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
-
-            {/* Suggestions dropdown */}
-            {showSuggestions && filteredSuggestions.length > 0 && (
-              <div className="absolute z-10 mt-2 w-full bg-white shadow-lg rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto max-h-60 focus:outline-none">
-                {filteredSuggestions.map((suggestion, index) => (
-                  <div
-                    key={index}
-                    className="cursor-pointer select-none relative py-3 pl-4 pr-9 hover:bg-indigo-50 text-gray-900"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <div className="flex items-center">
-                      <span className="ml-3 block font-medium">
-                        {suggestion}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {showSuggestions && searchQuery && filteredSuggestions.length === 0 && (
-              <div className="absolute z-10 mt-2 w-full bg-white shadow-lg rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto max-h-60 focus:outline-none">
-                <div className="cursor-default select-none relative py-3 pl-4 pr-9 text-gray-500">
-                  No algorithms found for "{searchQuery}"
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center space-x-6">
-            {/* Features Dropdown */}
-            <div className="relative" ref={featuresRef}>
-              <button
-                onClick={() => {
-                  setShowFeatures(!showFeatures);
-                  setShowAbout(false);
-                  setShowProfile(false);
-                }}
-                className="inline-flex items-center px-4 py-2 text-base font-medium rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition"
-              >
-                Features
-                <FaChevronDown className={`ml-2 h-4 w-4 transition-transform ${showFeatures ? 'transform rotate-180' : ''}`} />
-              </button>
-
-              {showFeatures && (
-                <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-2">
-                    {features.map((feature, index) => (
-                      <Link
-                        key={index}
-                        to={feature.path}
-                        className="group flex items-start px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                        onClick={() => setShowFeatures(false)}
-                      >
-                        <span className="mr-3 text-lg">{feature.icon}</span>
-                        <div>
-                          <p className="font-medium">{feature.name}</p>
-                          <p className="text-sm text-gray-500">{feature.description}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* About Dropdown */}
-            <div className="relative" ref={aboutRef}>
-              <button
-                onClick={() => {
-                  setShowAbout(!showAbout);
-                  setShowFeatures(false);
-                  setShowProfile(false);
-                }}
-                className="inline-flex items-center px-4 py-2 text-base font-medium rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition"
-              >
-                About
-                <FaChevronDown className={`ml-2 h-4 w-4 transition-transform ${showAbout ? 'transform rotate-180' : ''}`} />
-              </button>
-
-              {showAbout && (
-                <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-2">
-                    {aboutItems.map((item, index) => (
-                      <Link
-                        key={index}
-                        to={item.path}
-                        className="group flex items-start px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                        onClick={() => setShowAbout(false)}
-                      >
-                        <span className="mr-3 text-lg">{item.icon}</span>
-                        <div>
-                          <p className="font-medium">{item.name}</p>
-                          <p className="text-sm text-gray-500">{item.description}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link
-              to="/"
-              className="inline-flex items-center px-4 py-2 text-base font-medium rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition"
+    <header
+    className={`fixed top-0 left-0 w-full z-50 shadow-sm border-b transition-colors duration-300
+      ${theme === "light"
+        ? "bg-gray-100 text-gray-900 border-gray-200"
+        : "bg-[#0f0f1a] text-gray-100 border-gray-700"
+      }`}
+  >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex justify-between items-center h-20">
+        {/* Branding */}
+        <Link to="/" className="flex-shrink-0 flex items-center">
+          <div className="flex items-center">
+            <span
+              className={`text-3xl font-bold bg-clip-text text-transparent ${
+                theme === "light"
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600"
+                  : "bg-gradient-to-r from-cyan-400 to-blue-500"
+              }`}
             >
-              <FaHome className="mr-2 h-5 w-5" />
-              Home
-            </Link>
-
-            {/* Profile Dropdown */}
-            <div className="relative" ref={profileRef}>
-              <button
-                onClick={() => {
-                  setShowProfile(!showProfile);
-                  setShowFeatures(false);
-                  setShowAbout(false);
-                }}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition"
-              >
-                <FaUserCircle className="h-6 w-6" />
-              </button>
-
-              {showProfile && (
-                <div className="absolute z-10 right-0 mt-2 w-64 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-2">
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-700">Signed in as</p>
-                      <p className="text-sm text-gray-500 truncate">user@example.com</p>
-                    </div>
-                    {profileItems.map((item, index) => (
-                      <Link
-                        key={index}
-                        to={item.path}
-                        className="group flex items-start px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                        onClick={() => {
-                          setShowProfile(false);
-                          if (item.action) item.action();
-                        }}
-                      >
-                        <span className="mr-3 text-lg">{item.icon}</span>
-                        <div>
-                          <p className="font-medium">{item.name}</p>
-                          <p className="text-sm text-gray-500">{item.description}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+              CODEPULSE
+            </span>
+          </div>
+        </Link>
+  
+        {/* Search Bar */}
+        <div className="flex-1 max-w-xl mx-6 relative" ref={searchRef}>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaSearch
+                className={`h-5 w-5 ${
+                  theme === "light" ? "text-gray-400" : "text-gray-300"
+                }`}
+              />
             </div>
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onKeyDown={handleKeyPress}
+              onFocus={() => setShowSuggestions(true)}
+              placeholder="Search algorithms (e.g. 'Bubble Sort', 'DFS')..."
+              className={`block w-full pl-10 pr-3 py-3 text-base border rounded-lg leading-5
+                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition
+                ${
+                  theme === "light"
+                    ? "bg-white text-gray-900 border-gray-300 placeholder-gray-500"
+                    : "bg-[#1f1f2e] text-gray-100 border-gray-600 placeholder-gray-400"
+                }`}
+            />
+          </div>
+        </div>
+  
+        {/* Navigation */}
+        <div className="flex items-center space-x-6">
+          {/* Features Dropdown */}
+          <div className="relative" ref={featuresRef}>
+            <button
+              onClick={() => {
+                setShowFeatures(!showFeatures);
+                setShowAbout(false);
+                setShowProfile(false);
+              }}
+              className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+                ${
+                  theme === "light"
+                    ? "bg-white text-gray-800 hover:text-indigo-500"
+                    : "bg-[#1f1f2e] text-gray-100 hover:text-cyan-400"
+                }`}
+            >
+              Features
+              <FaChevronDown
+                className={`ml-2 h-4 w-4 transition-transform ${
+                  showFeatures ? "transform rotate-180" : ""
+                }`}
+              />
+           </button> {showFeatures && ( <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> {features.map((feature, index) => ( <Link key={index} to={feature.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => setShowFeatures(false)} > <span className="mr-3 text-lg">{feature.icon}</span> <div> <p className="font-medium">{feature.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {feature.description} </p> </div> </Link> ))} </div> </div> )} </div> {/* About Dropdown */}
+          <div className="relative" ref={aboutRef}>
+            <button
+              onClick={() => {
+                setShowAbout(!showAbout);
+                setShowFeatures(false);
+                setShowProfile(false);
+              }}
+              className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+                ${
+                  theme === "light"
+                    ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
+                    : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
+                }`}
+            >
+              About
+              <FaChevronDown
+                className={`ml-2 h-4 w-4 transition-transform ${
+                  showAbout ? "transform rotate-180" : ""
+                }`}
+              />
+            </button>
+            {showAbout && ( <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> {aboutItems.map((item, index) => ( <Link key={index} to={item.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => setShowAbout(false)} > <span className="mr-3 text-lg">{item.icon}</span> <div> <p className="font-medium">{item.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {item.description} </p> </div> </Link> ))} </div> </div> )}
+          </div>
+  
+          {/* Theme Toggle */}
+          <div>
+            <button
+              onClick={Toggletheme}
+              className={`m-2 font-semibold transition ${
+                theme === "light" ? "text-gray-700" : "text-gray-200"
+              }`}
+            >
+              {theme === "light" ? <FiMoon size={20} /> : <FiSun size={20} />}
+            </button>
+          </div>
+  
+          {/* Home */}
+          <Link
+            to="/"
+            className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+              ${
+                theme === "light"
+                  ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
+                  : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
+              }`}
+          >
+            <FaHome className="mr-2 h-5 w-5" />
+            Home
+          </Link>
+  
+          {/* Profile Dropdown */}
+          <div className="relative" ref={profileRef}>
+            <button
+              onClick={() => {
+                setShowProfile(!showProfile);
+                setShowFeatures(false);
+                setShowAbout(false);
+              }}
+              className={`flex items-center justify-center w-10 h-10 rounded-full transition
+                ${
+                  theme === "light"
+                    ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+                    : "bg-[#2a2a3d] text-gray-200 hover:bg-[#3a3a50]"
+                }`}
+            >
+              <FaUserCircle className="h-6 w-6" />
+            </button>
+            {showProfile && ( <div className="absolute z-10 right-0 mt-2 w-64 origin-top-right bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-600"> <p className="text-sm font-medium text-gray-700 dark:text-gray-200"> Signed in as </p> <p className="text-sm text-gray-500 dark:text-gray-300 truncate"> user@example.com </p> </div> {profileItems.map((item, index) => ( <Link key={index} to={item.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => { setShowProfile(false); if (item.action) item.action(); }} > <span className="mr-3 text-lg">{item.icon}</span> <div> <p className="font-medium">{item.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {item.description} </p> </div> </Link> ))} </div> </div> )}
           </div>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
+  
   );
 }
