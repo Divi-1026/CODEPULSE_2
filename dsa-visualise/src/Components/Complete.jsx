@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "../axios";
 
-function CompletionCheckbox({ problemTitle }) {
+function CompletionCheckbox1({ problemTitle }) {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchMarkedStatus = async () => {
       try {
-        const res = await axios.get('/api/progress/marked', { withCredentials: true });
+        const res = await axios.get('/api/theory/marked', { withCredentials: true });
         const markedProblems = res.data.markedProblems || [];
         
         const isMarked = markedProblems.some(p => {
@@ -38,7 +38,7 @@ function CompletionCheckbox({ problemTitle }) {
       setIsChecked(!previousState);
       
       const res = await axios.post(
-        `/api/progress/toggle-title/${encodeURIComponent(problemTitle)}`,
+        `/api/theory/toggle-title/${encodeURIComponent(problemTitle)}`,
         {},
         { withCredentials: true }
       );
@@ -118,4 +118,4 @@ function CompletionCheckbox({ problemTitle }) {
   );
 }
 
-export default CompletionCheckbox;
+export default CompletionCheckbox1;
