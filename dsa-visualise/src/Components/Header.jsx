@@ -334,24 +334,18 @@ export default function Header({ onExplore }) {
           </Link>
   
           {/* Profile Dropdown */}
-          <div className="relative" ref={profileRef}>
-            <button
-              onClick={() => {
-                setShowProfile(!showProfile);
-                setShowFeatures(false);
-                setShowAbout(false);
-              }}
-              className={`flex items-center justify-center w-10 h-10 rounded-full transition
-                ${
-                  theme === "light"
-                    ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
-                    : "bg-[#2a2a3d] text-gray-200 hover:bg-[#3a3a50]"
-                }`}
-            >
-              <FaUserCircle className="h-6 w-6" />
-            </button>
-            {showProfile && ( <div className="absolute z-10 right-0 mt-2 w-64 origin-top-right bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-600"> <p className="text-sm font-medium text-gray-700 dark:text-gray-200"> Signed in as </p> <p className="text-sm text-gray-500 dark:text-gray-300 truncate"> user@example.com </p> </div> {profileItems.map((item, index) => ( <Link key={index} to={item.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => { setShowProfile(false); if (item.action) item.action(); }} > <span className="mr-3 text-lg">{item.icon}</span> <div> <p className="font-medium">{item.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {item.description} </p> </div> </Link> ))} </div> </div> )}
-          </div>
+           <Link
+            to="/profile"
+            className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+              ${
+                theme === "light"
+                  ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
+                  : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
+              }`}
+          >
+            <FaUserCircle className="mr-2 h-5 w-5" />
+            User
+          </Link>
         </div>
       </div>
     </div>

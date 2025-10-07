@@ -8,18 +8,17 @@ export default function ProgressTracking() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalProblems, setTotalProblems] = useState(12);
-  const [totalLearning, setTotalLearning] = useState(10); // Total learning items
+  const [totalLearning, setTotalLearning] = useState(10);
 
   useEffect(() => {
     const fetchProgressData = async () => {
       try {
         setLoading(true);
-        // Fetch both solved problems and learning progress
         const [problemsRes, learningRes] = await Promise.all([
           axios.get('/api/progress/marked'),
-          axios.get('/api/theory/marked') // You'll need to create this endpoint
+          axios.get('/api/theory/marked')
         ]);
-        console.log("from frntend",learningRes)
+        console.log("from frntend", learningRes);
         setProblems(problemsRes.data?.markedProblems || []);
         setLearningProgress(learningRes.data?.markedProblems || []);
         setLoading(false);
@@ -36,39 +35,90 @@ export default function ProgressTracking() {
   const problemsPercentage = Math.round((problems.length / totalProblems) * 100);
   const learningPercentage = Math.round((learningProgress.length / totalLearning) * 100);
   const overallPercentage = Math.round(((problems.length + learningProgress.length) / (totalProblems + totalLearning)) * 100);
+console.log(problemsPercentage,learningPercentage,overallPercentage)
+  // Fixed ProgressCircle component
+  const ProgressCircle = ({ percentage, label, color }) => {
+    // Calculate circumference and stroke-dashoffset
+    const radius = 15.9155;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
-  const ProgressCircle = ({ percentage, label, color }) => (
-    <div className="flex flex-col items-center">
-      <div className="relative w-32 h-32 mb-3">
-        <svg className="w-full h-full" viewBox="0 0 36 36">
-          <path
-            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
+    return (
+      <div className="flex flex-col items-center">
+        <div className="relative w-32 h-32 mb-3">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            {/* Background circle */}
+            <circle
+              cx="18"
+              cy="18"
+              r={radius}
+              fill="none"
+              stroke="#e6e6e6"
+              strokeWidth="3"
+            />
+            {/* Progress circle */}
+            <circle
+              cx="18"
+              cy="18"
+              r={radius}
+              fill="none"
+              stroke={color}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              style={{
+                transition: 'stroke-dashoffset 0.5s ease-in-out'
+              }}
+            />
+          </svg>
+          <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-black">
+            {percentage}%
+          </span>
+        </div>
+        <p className="text-sm font-medium text-gray-700">{label}</p>
+        <p className="text-xs text-gray-500 text-center mt-1">
+          {percentage === 100 ? 'Completed!' : 'In Progress'}
+        </p>
+      </div>
+    );
+  };
+
+  // Fixed Overall Progress circle calculation
+  const OverallProgressCircle = ({ percentage }) => {
+    const radius = 15.9155;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+    return (
+      <div className="relative w-24 h-24 mx-auto mb-4">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+          <circle
+            cx="18"
+            cy="18"
+            r={radius}
             fill="none"
             stroke="#e6e6e6"
             strokeWidth="3"
           />
-          <path
-            d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
+          <circle
+            cx="18"
+            cy="18"
+            r={radius}
             fill="none"
-            stroke={color}
+            stroke="#4f46e5"
             strokeWidth="3"
-            strokeDasharray={`${percentage}, 100`}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
           />
         </svg>
-        <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold">
+        <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-bold text-indigo-700">
           {percentage}%
         </span>
       </div>
-      <p className="text-sm font-medium text-gray-700">{label}</p>
-      <p className="text-xs text-gray-500 text-center mt-1">
-        {percentage === 100 ? 'Completed!' : 'In Progress'}
-      </p>
-    </div>
-  );
+    );
+  };
 
   return (
     <>
@@ -84,26 +134,7 @@ export default function ProgressTracking() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Overall Progress */}
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 text-center">
-                    <div className="relative w-24 h-24 mx-auto mb-4">
-                      <svg className="w-full h-full" viewBox="0 0 36 36">
-                        <path
-                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          fill="none"
-                          stroke="#e6e6e6"
-                          strokeWidth="3"
-                        />
-                        <path
-                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          fill="none"
-                          stroke="#4f46e5"
-                          strokeWidth="3"
-                          strokeDasharray={`${overallPercentage}, 100`}
-                        />
-                      </svg>
-                      <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-bold text-indigo-700">
-                        {overallPercentage}%
-                      </span>
-                    </div>
+                    <OverallProgressCircle percentage={overallPercentage} />
                     <h3 className="text-lg font-semibold text-gray-800">Overall Progress</h3>
                     <p className="text-sm text-gray-600 mt-2">
                       {problems.length + learningProgress.length} of {totalProblems + totalLearning} items completed
@@ -137,6 +168,7 @@ export default function ProgressTracking() {
               </div>
             </div>
 
+            {/* Rest of your component remains the same */}
             <div className="flex flex-col lg:flex-row gap-8">
               
               {/* Problems Progress Section */}

@@ -164,16 +164,17 @@ export default function Home() {
       action: "Try JavaScript",
       link: "/dryrun"
     },
-    {
-      title: "Algorithm Comparison",
-      desc: "Run two algorithms side-by-side",
-      icon: "⚖️",
-      colorLight: "from-purple-50 to-fuchsia-50",
-      colorDark: "from-gray-700 to-gray-800",
-      btnColor: "purple",
-      action: "Compare Sorts",
-      link: "/compare"
-    },
+    
+   {
+  title: "Compiler",
+  desc: "Write, run, and debug your code seamlessly",
+  icon: "💻",
+  colorLight: "from-cyan-50 to-blue-50",
+  colorDark: "from-gray-700 to-gray-800",
+  btnColor: "cyan",
+  action: "Open Compiler",
+  link: "/code_run"
+},
     {
       title: "Understand Topics",
       desc: "Learn every topic in detail",
@@ -193,17 +194,17 @@ export default function Home() {
       btnColor: "pink",
       action: "View Dashboard",
       link: "/dashboard"
-    },
-    {
-      title: "Learn with best",
-      desc: "Upload datasets or create test cases",
-      icon: "🔢",
-      colorLight: "from-cyan-50 to-blue-50",
+    }, {
+      title: "Algorithm Comparison",
+      desc: "Run two algorithms side-by-side",
+      icon: "⚖️",
+      colorLight: "from-purple-50 to-fuchsia-50",
       colorDark: "from-gray-700 to-gray-800",
-      btnColor: "cyan",
-      action: "Upload CSV",
-      link: "/custom-inputs"
+      btnColor: "purple",
+      action: "Compare Sorts",
+      link: "/compare"
     }
+
   ].map((feature, index) => (
     <Link
       to={feature.link}

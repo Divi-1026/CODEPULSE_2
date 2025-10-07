@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from 'react';
 import Login from './Pages/AuthPage';
+import UserProfile from "./Components/Feature/UserDetail";
 import LinearSearchTheory from "./Components/Theory/LinearSearchTheory";
 import Visualizations from "./Components/Feature/Visulaization";
 import AuthPage from "./Pages/AuthPage";  
@@ -36,6 +37,7 @@ import ContactUs from "./Components/Feature/ContactUs";
 import BfsTraversalTheory from "./Components/Theory/LearnBFS";
 import AVLTreeTheory from "./Components/Theory/LearnAvlTree";
 import BFSTraversalTheory from "./Components/Theory/LearnBFS";
+import OnlineCompiler from "./Components/Feature/CodeEditor";
 // import ProfilePage from "./Components/Profile";
 
 function App() {
@@ -54,7 +56,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/dryrun" element={<ProtectedRoute><CodeVisualizerPage/></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><ProgressTracking/></ProtectedRoute>} />
-            
+             <Route path="/Profile" element={<ProtectedRoute><UserProfile/></ProtectedRoute>} />
             <Route path="/Learn_Binary" element={<ProtectedRoute><BinarySearchTheory/></ProtectedRoute>} />
             {/* <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} /> */}
             <Route path="/Visualization" element={<ProtectedRoute><Visualizations /></ProtectedRoute>} />
@@ -72,7 +74,7 @@ function App() {
             <Route path="/Binary_Search" element={<ProtectedRoute><BinarySearchComponent /></ProtectedRoute>} />
             <Route path="/AVL-Tree" element={<ProtectedRoute><AvlTree /></ProtectedRoute>} />
             <Route path="/Learn_AVL-Tree" element={<ProtectedRoute><AVLTreeTheory /></ProtectedRoute>} />
-           
+           <Route path='/code_run' element={<OnlineCompiler/>}></Route>
             <Route path="/Binary-Search-Tree" element={<ProtectedRoute><BinarySearchTree /></ProtectedRoute>} />
             <Route path="/Learn_Binary-Search-Tree" element={<ProtectedRoute><BinarySearchTreeTheory /></ProtectedRoute>} />
             <Route path="/Learn_Tree-Traversal" element={<ProtectedRoute><TreeTraversalTheory /></ProtectedRoute>} />

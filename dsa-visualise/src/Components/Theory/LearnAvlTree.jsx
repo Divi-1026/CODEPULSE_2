@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Header';
 import NavTheory from '../NavBarSide/navTheory';
-
+import CompletionCheckbox1 from '../Complete';
 export default function AVLTreeTheory() {
   const [activeLanguage, setActiveLanguage] = useState('JavaScript');
 
@@ -1045,6 +1045,12 @@ fn main() {
             </div>
           </div>
         </div>
+        <div className="fixed bottom-4 right-4 bg-white p-6 rounded-xl shadow-xl border border-gray-300 z-50 transform transition-all hover:scale-105">
+              <div className="flex flex-col items-center space-y-3">
+            
+                <CompletionCheckbox1 problemTitle="AVL Tree" />
+              </div>
+            </div>
       </div>
     </>
   );
