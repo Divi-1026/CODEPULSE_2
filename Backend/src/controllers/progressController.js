@@ -4,15 +4,15 @@ const Progress = require('../models/Progress');
 // Get all marked problems for user
 const getMarkedProblems = async (req, res) => {
   try {
-    console.log("Function called")
+    // console.log("Function called")
     const userId = req.result;
-    console.log(userId)
+    // console.log(userId)
     if (!userId) {
       return res.status(400).json({ success: false, message: "User not authenticated" });
     }
 
     const markedProgress = await Progress.findOne({ user: userId });
-    console.log(markedProgress.markedProblems)
+    // console.log(markedProgress.markedProblems)
     return res.status(200).json({
       success: true,
       markedProblems: markedProgress?.markedProblems || [],
@@ -32,8 +32,8 @@ const getMarkedProblems = async (req, res) => {
 const toggleProblemStatus = async (req, res) => {
   try {
     const { problemTitle } = req.params;
-  console.log(req.params)
-  console.log(problemTitle)
+  // console.log(req.params)
+  // console.log(problemTitle)
     let progress = await Progress.findOne({ user: req.user._id });
 
     if (!progress) {
@@ -50,7 +50,7 @@ const toggleProblemStatus = async (req, res) => {
       }
     }
     console.log(progress.markedProblems)
-console.log("suces")
+// console.log("suces")
     await progress.save();
     res.json({ success: true, markedProblems: progress.markedProblems });
   } catch (error) {

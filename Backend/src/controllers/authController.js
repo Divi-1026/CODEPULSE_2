@@ -7,6 +7,21 @@ require('dotenv').config({ path: __dirname + '/../../.env' });
 const jwt = require('jsonwebtoken');
 
 // Register function
+const userDetails=async(req,res)=>{
+try {
+    const user = req.result;
+    console.log(user);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const result = await User.findById(user);
+    console.log(result)
+    if (!result) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
 const register = async (req, res) => {
   try {
     validate(req.body);
@@ -91,4 +106,4 @@ res.status(401).send("Invalid")
   }
 }
 
-module.exports = { register, login ,logout };
+module.exports = { register, login ,logout ,userDetails};
