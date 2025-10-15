@@ -1,32 +1,11 @@
-require('dotenv').config({ path: __dirname + '/../.env' });
-const fs = require('fs');
-const { exec, spawn } = require('child_process');
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const axios = require('axios');
+const { spawn, exec } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const os = require('os');
 
-const connectDB = require('./config/db');
-const progressRouter = require('./routes/progressRouter');
-const authRouter = require('./routes/authRoutes');
-const TheoryRouter = require('./routes/TheoryRouter');
-
-const app = express();
-
-// Connect to MongoDB
-connectDB();
-
-// Middlewares
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+const router = express.Router();
 
 // Promisify file operations
 const writeFileAsync = util.promisify(fs.writeFile);
@@ -73,12 +52,12 @@ class ComplexityAnalyzer {
             const endTime = process.hrtime(startTime);
             const endMemory = process.memoryUsage();
             
-            const executionTime = endTime[0] * 1000 + endTime[1] / 1000000;
+            const executionTime = endTime[0] * 1000 + endTime[1] / 1000000; // Convert to milliseconds
             const memoryUsed = endMemory.heapUsed - startMemory.heapUsed;
             
             return {
                 language: 'python',
-                execution_time: executionTime / 1000,
+                execution_time: executionTime / 1000, // Convert to seconds
                 memory_used_bytes: Math.max(0, memoryUsed),
                 memory_peak_bytes: endMemory.heapUsed,
                 cpu_time: executionTime / 1000,
@@ -140,6 +119,7 @@ class ComplexityAnalyzer {
     }
 
     async analyzeJava(code, language, input) {
+        // Extract class name from Java code
         const classNameMatch = code.match(/class\s+(\w+)/);
         if (!classNameMatch) {
             return {
@@ -156,6 +136,7 @@ class ComplexityAnalyzer {
         try {
             await writeFileAsync(javaFile, code);
 
+            // Compile Java code
             const compileResult = await this.executeCode('javac', [javaFile], '', 15000);
             
             if (compileResult.code !== 0) {
@@ -169,6 +150,7 @@ class ComplexityAnalyzer {
             const startTime = process.hrtime();
             const startMemory = process.memoryUsage();
 
+            // Execute Java code
             const execResult = await this.executeCode('java', ['-cp', this.tempDir, className], input, 30000);
 
             const endTime = process.hrtime(startTime);
@@ -209,6 +191,7 @@ class ComplexityAnalyzer {
         try {
             await writeFileAsync(cppFile, code);
 
+            // Compile C++ code
             const compileResult = await this.executeCode('g++', [cppFile, '-o', exeFile], '', 15000);
             
             if (compileResult.code !== 0) {
@@ -222,6 +205,7 @@ class ComplexityAnalyzer {
             const startTime = process.hrtime();
             const startMemory = process.memoryUsage();
 
+            // Execute compiled code
             const execResult = await this.executeCode(exeFile, [], input, 30000);
 
             const endTime = process.hrtime(startTime);
@@ -262,6 +246,7 @@ class ComplexityAnalyzer {
         try {
             await writeFileAsync(cFile, code);
 
+            // Compile C code
             const compileResult = await this.executeCode('gcc', [cFile, '-o', exeFile], '', 15000);
             
             if (compileResult.code !== 0) {
@@ -275,6 +260,7 @@ class ComplexityAnalyzer {
             const startTime = process.hrtime();
             const startMemory = process.memoryUsage();
 
+            // Execute compiled code
             const execResult = await this.executeCode(exeFile, [], input, 30000);
 
             const endTime = process.hrtime(startTime);
@@ -348,11 +334,13 @@ class ComplexityAnalyzer {
                 reject(error);
             });
 
+            // Set timeout
             timeoutId = setTimeout(() => {
                 childProcess.kill();
                 reject(new Error('Execution timeout'));
             }, timeout);
 
+            // Send input if provided
             if (input) {
                 childProcess.stdin.write(input);
                 childProcess.stdin.end();
@@ -374,84 +362,8 @@ class ComplexityAnalyzer {
 // Initialize analyzer
 const analyzer = new ComplexityAnalyzer();
 
-// Test Route
-app.get("/", (req, res) => {
-    res.send("Backend is working ✅");
-});
-
-// Judge0 Language Map
-const languageMap = {
-    python: 71,
-    cpp: 54,
-    "c++": 54,
-    java: 62,
-    javascript: 63,
-    node: 63,
-    c: 50
-};
-
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-const toBase64 = str => Buffer.from(str, 'utf-8').toString('base64');
-const fromBase64 = str => Buffer.from(str, 'base64').toString('utf-8');
-
-// Existing Judge0 Execution Endpoint
-app.post('/api/execute', async (req, res) => {
-    const { code, language, input } = req.body;
-
-    if (!languageMap[language.toLowerCase()]) {
-        return res.status(400).json({ error: 'Language not supported' });
-    }
-
-    try {
-        const submitResponse = await axios.post(
-            'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=false',
-            {
-                source_code: toBase64(code),
-                language_id: languageMap[language.toLowerCase()],
-                stdin: toBase64(input || '')
-            },
-            {
-                headers: {
-                    'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-                    'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        const token = submitResponse.data.token;
-
-        let result;
-        while (true) {
-            const poll = await axios.get(
-                `https://judge0-ce.p.rapidapi.com/submissions/${token}?base64_encoded=true&fields=*`,
-                {
-                    headers: {
-                        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-                        'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
-                    }
-                }
-            );
-
-            result = poll.data;
-            if (result.status.id > 2) break;
-            await wait(1000);
-        }
-
-        res.json({
-            stdout: fromBase64(result.stdout || ''),
-            stderr: fromBase64(result.stderr || result.compile_output || result.message || ''),
-            status: result.status.description
-        });
-
-    } catch (err) {
-        console.error(err.response?.data || err.message);
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Complexity Analysis Endpoint
-app.post('/api/analyze-complexity', async (req, res) => {
+// Complexity analysis endpoint
+router.post('/analyze-complexity', async (req, res) => {
     try {
         const { code, language, input } = req.body;
 
@@ -474,8 +386,43 @@ app.post('/api/analyze-complexity', async (req, res) => {
     }
 });
 
-// Cleanup endpoint
-app.post('/api/cleanup', async (req, res) => {
+// Existing execute endpoint (keep this for backward compatibility)
+router.post('/execute', async (req, res) => {
+    try {
+        const { code, language, input } = req.body;
+
+        if (!code || !language) {
+            return res.status(400).json({
+                error: 'Code and language are required'
+            });
+        }
+
+        // Use the analyzer for execution too
+        const result = await analyzer.analyzeCode(code, language, input || '');
+        
+        if (result.error) {
+            return res.json({
+                error: result.error,
+                stderr: result.stderr
+            });
+        }
+
+        res.json({
+            stdout: result.stdout,
+            stderr: result.stderr,
+            compile_output: result.compile_output
+        });
+
+    } catch (error) {
+        console.error('Execution error:', error);
+        res.status(500).json({
+            error: 'Internal server error'
+        });
+    }
+});
+
+// Cleanup endpoint to remove temporary files
+router.post('/cleanup', async (req, res) => {
     try {
         const tempDir = path.join(__dirname, 'temp');
         if (fs.existsSync(tempDir)) {
@@ -490,11 +437,4 @@ app.post('/api/cleanup', async (req, res) => {
     }
 });
 
-// API Routes
-app.use('/api/auth', authRouter);
-app.use('/api/progress', progressRouter);
-app.use('/api/theory', TheoryRouter);
-
-// Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = router;

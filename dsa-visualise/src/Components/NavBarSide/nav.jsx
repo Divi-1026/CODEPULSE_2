@@ -147,6 +147,14 @@ export default function Nav() {
                     &lt;&gt; DFS Traversal &lt;/&gt;
                   </div>
                 </Link>
+                 <Link to="/dijkstara">
+                <div className="bg-gradient-to-br from-[#130954] via-sky-600 to-[#130954] text-white py-2 rounded-md
+                hover:text-white hover:font-semibold 
+                hover:shadow-md hover:shadow-[#3e5648]  
+                transition-all duration-300">
+                    &lt;&gt; Dijkstara &lt;/&gt;
+                  </div>
+                </Link>
                 {/* <Link to="/AVL-Tree">
                   <div className="bg-[#3f6842] text-white py-2 rounded-md 
                     hover:bg-gradient-to-r from-[#65a069] to-[#4d8152] 

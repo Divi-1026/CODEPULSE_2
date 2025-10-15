@@ -38,6 +38,10 @@ import BfsTraversalTheory from "./Components/Theory/LearnBFS";
 import AVLTreeTheory from "./Components/Theory/LearnAvlTree";
 import BFSTraversalTheory from "./Components/Theory/LearnBFS";
 import OnlineCompiler from "./Components/Feature/CodeEditor";
+import DijkstraVisualiser from "./Components/Graph/Dijkshatra";
+import FibonacciAnimatedDP from "./Dp/Fibbonaci";
+import DijkstraTheory from "./Components/Theory/LearnDijkstara";
+// import ActivitySelectionVisualizer from "./Greedy/Activity";
 // import ProfilePage from "./Components/Profile";
 
 function App() {
@@ -90,7 +94,10 @@ function App() {
             <Route path="/tree-data-structure" element={<ProtectedRoute><BinarySearchTree /></ProtectedRoute>} />
             <Route path="/dynamic-programming" element={<ProtectedRoute><MergeSortVisualizer /></ProtectedRoute>} />
             <Route path="/greedy-algorithms" element={<ProtectedRoute><BubbleSort /></ProtectedRoute>} />
+ <Route path="/dijkstara" element={<ProtectedRoute><DijkstraVisualiser /></ProtectedRoute>} />
+ <Route path="/dijkstara-thoery" element={<ProtectedRoute><DijkstraTheory /></ProtectedRoute>} />
 
+  {/* <Route path="/activity" element={<ProtectedRoute><ActivitySelectionVisualizer /></ProtectedRoute>} /> */}
             {/* Default to register if unknown route */}
             <Route path="*" element={<Navigate to="/auth" />} />
           </Routes>
