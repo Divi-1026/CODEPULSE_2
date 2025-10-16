@@ -68,7 +68,7 @@ const OnlineCompiler = () => {
     setShowAnalysis(false);
 
     try {
-      const res = await fetch('http://localhost:5000/api/analyze-complexity', {
+      const res = await fetch('http://localhost:5000/api/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, language, input }),
@@ -82,7 +82,7 @@ const OnlineCompiler = () => {
         let combinedOutput = '';
         if (data.compile_output) combinedOutput += `⚠ Compile Output:\n${data.compile_output}\n\n`;
         if (data.stderr) combinedOutput += `❌ Runtime Error:\n${data.stderr}\n\n`;
-        if (data.stdout) combinedOutput += `✅ Output:\n${data.stdout}\n`;
+        if (data.stdout) combinedOutput += ` Output:\n${data.stdout}\n`;
         setOutput(combinedOutput || 'Code executed successfully!');
       }
     } catch (e) {

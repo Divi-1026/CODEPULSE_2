@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-5 pt-6 pb-6 text-sm">
+    <><footer className="bg-white border-t border-gray-200    pb-6 text-sm">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         {/* Brand Section */}
@@ -141,6 +141,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </footer></>
   );
 }

@@ -1,10 +1,11 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useTheme } from "../utils/ThemeProvider";
-import { FaSearch, FaHome, FaChevronDown, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaHome, FaChevronDown, FaUserCircle,FaUserShield} from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
-
+import { useDispatch, useSelector } from 'react-redux';
 export default function Header({ onExplore }) {
+    const { user } = useSelector((state) => state.auth);
   const { theme, Toggletheme } = useTheme();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -163,6 +164,7 @@ export default function Header({ onExplore }) {
   }, []);
 
   useEffect(() => {
+    
     if (searchQuery.trim() === "") {
       setFilteredSuggestions([]);
       return;
@@ -192,6 +194,10 @@ export default function Header({ onExplore }) {
       setShowSuggestions(true);
     }
   };
+   const handleLogout = () => {
+      dispatch(logoutUser());
+      setSolvedProblems([]); // Clear solved problems on logout
+    };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") handleSearch();
@@ -334,18 +340,41 @@ export default function Header({ onExplore }) {
           </Link>
   
           {/* Profile Dropdown */}
-           <Link
-            to="/profile"
-            className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
-              ${
-                theme === "light"
-                  ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
-                  : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
-              }`}
-          >
-            <FaUserCircle className="mr-2 h-5 w-5" />
-            User
-          </Link>
+       
+  <div className="flex gap-2">
+    {/* Profile Button */}
+    <Link
+      to="/profile"
+      className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+        ${
+          theme === "light"
+            ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
+            : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
+        }`}
+    >
+      <FaUserCircle className="mr-2 h-5 w-5" />
+      Profile
+    </Link>
+
+    {/* Show Admin Panel only if user is admin */}
+    {user.role === "admin" && (
+      <Link
+        to="/admin"
+        className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
+          ${
+            theme === "light"
+              ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
+              : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
+          }`}
+      >
+        <FaUserShield className="mr-2 h-5 w-5" />
+        Admin Panel
+      </Link>
+    )}
+  </div>
+
+
+          
         </div>
       </div>
     </div>

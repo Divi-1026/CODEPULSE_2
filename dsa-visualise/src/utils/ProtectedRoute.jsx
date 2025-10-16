@@ -1,12 +1,12 @@
-// utils/ProtectedRoute.jsx
-import { Navigate } from 'react-router-dom';
+// // utils/ProtectedRoute.jsx
+// import { Navigate } from 'react-router-dom';
 
-export default function ProtectedRoute({ children }) {
-  const token = document.cookie.includes("token"); // OR from localStorage
+// export default function ProtectedRoute({ children }) {
+//   const token = document.cookie.includes("token"); // OR from localStorage
 
-  if (!token) {
-    return <Navigate to="/auth" replace />;
-  }
+//   if (!token) {
+//     return <Navigate to="/auth" replace />;
+//   }
 
-  return children;
-}
+//   return children;
+// }
