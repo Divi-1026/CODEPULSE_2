@@ -158,12 +158,12 @@ Return ONLY the JSON array. Do not include markdown formatting or other text.`;
   const activeLine = visualization ? visualization[currentStep]?.line_executed : -1;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen pt-22 flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
       {/* Header */}
-      <Header></Header>
+      {/* <Header></Header> */}
 
       {/* Main Content */}
-      <main className="mt-32 flex-grow max-w-8xl mx-auto w-full px-6 py-8">
+      <main className=" flex-grow max-w-8xl mx-auto w-full px-6 py-8">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a8a] via-[#1051a1] to-[#0f2664] mb-8 animate-textShine">
             DRY RUN YOUR CODE

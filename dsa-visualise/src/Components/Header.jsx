@@ -2,6 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useTheme } from "../utils/ThemeProvider";
 import { FaSearch, FaHome, FaChevronDown, FaUserCircle,FaUserShield} from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
+import { Info } from "lucide-react";
+
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useDispatch, useSelector } from 'react-redux';
 export default function Header({ onExplore }) {
@@ -68,11 +70,18 @@ export default function Header({ onExplore }) {
   };
 
   const features = [
+
     {
       name: "Interactive Visualizations",
       description: "Step-by-step animations of algorithms",
       icon: "👁️",
       path: "/Visualization"
+    },
+    {
+      name: "Problem Solve",
+      description: "Practice and Solve Problem",
+      icon: "📝",
+      path: "/problem-list"
     },
     {
       name: "Code Execution",
@@ -87,33 +96,33 @@ export default function Header({ onExplore }) {
       path: "/features/comparison"
     },
     {
-      name: "Understand Topic",
-      description: "Practice common interview questions",
-      icon: "📝",
-      path: "/Learn"
+      name: "Code Execution",
+      description: "Run and visualize your own code",
+      icon: "💻",
+      path: "/features/code-execution"
     }
   ];
 
-  const aboutItems = [
-    {
-      name: "Our Mission",
-      description: "Learn about our vision for DSA education",
-      icon: "🎯",
-      path: "/about/mission"
-    },
-    {
-      name: "Team",
-      description: "Meet the creators behind CodePulse",
-      icon: "👥",
-      path: "/about/team"
-    },
-    {
-      name: "Contact Us",
-      description: "Get in touch with our team",
-      icon: "📩",
-      path: "ContactUs"
-    }
-  ];
+  // const aboutItems = [
+  //   {
+  //     name: "Our Mission",
+  //     description: "Learn about our vision for DSA education",
+  //     icon: "🎯",
+  //     path: "/about/mission"
+  //   },
+  //   {
+  //     name: "Team",
+  //     description: "Meet the creators behind CodePulse",
+  //     icon: "👥",
+  //     path: "/about/team"
+  //   },
+  //   {
+  //     name: "Contact Us",
+  //     description: "Get in touch with our team",
+  //     icon: "📩",
+  //     path: "ContactUs"
+  //   }
+  // ];
 
   const profileItems = [
     {
@@ -290,7 +299,7 @@ export default function Header({ onExplore }) {
               />
            </button> {showFeatures && ( <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> {features.map((feature, index) => ( <Link key={index} to={feature.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => setShowFeatures(false)} > <span className="mr-3 text-lg">{feature.icon}</span> <div> <p className="font-medium">{feature.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {feature.description} </p> </div> </Link> ))} </div> </div> )} </div> {/* About Dropdown */}
           <div className="relative" ref={aboutRef}>
-            <button
+          <Link to='/about'> <button
               onClick={() => {
                 setShowAbout(!showAbout);
                 setShowFeatures(false);
@@ -302,15 +311,16 @@ export default function Header({ onExplore }) {
                     ? "text-gray-800 hover:text-indigo-600 hover:bg-gray-50"
                     : "text-gray-100 hover:text-cyan-400 hover:bg-[#2a2a3d]"
                 }`}
-            >
+            > <Info
+  className={`ml-2 mr-2 font-bold mt-1/2 h-4 w-4 transition-transform ${
+    showAbout ? "text-blue-500" : "text-black"
+  }`}
+/>
+
               About
-              <FaChevronDown
-                className={`ml-2 h-4 w-4 transition-transform ${
-                  showAbout ? "transform rotate-180" : ""
-                }`}
-              />
+            
             </button>
-            {showAbout && ( <div className="absolute z-10 mt-2 w-64 origin-top-right bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"> <div className="py-2"> {aboutItems.map((item, index) => ( <Link key={index} to={item.path} className="group flex items-start px-4 py-3 text-sm hover:bg-indigo-50 dark:hover:bg-gray-700" onClick={() => setShowAbout(false)} > <span className="mr-3 text-lg">{item.icon}</span> <div> <p className="font-medium">{item.name}</p> <p className="text-sm text-gray-500 dark:text-gray-300"> {item.description} </p> </div> </Link> ))} </div> </div> )}
+           </Link> 
           </div>
   
           {/* Theme Toggle */}

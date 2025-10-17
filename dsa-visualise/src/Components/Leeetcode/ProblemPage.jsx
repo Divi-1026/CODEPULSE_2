@@ -244,7 +244,7 @@ const ProblemPage = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 flex bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+    <div className="min-h-screen pt-25 flex bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
       {/* Left Panel */}
       <div className="w-1/2 flex flex-col border-r border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
         {/* Left Tabs */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Edit, Trash2, Home, Code } from 'lucide-react';
+import { Plus, Edit, Trash2, Home, Code ,User} from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 function Admin() {
@@ -20,7 +20,15 @@ function Admin() {
       icon: Edit,
       color: 'bg-blue-500 hover:bg-blue-600',
       iconColor: 'text-white',
-      route: '/problem/detail'}
+      route: '/problem/detail'},
+       {
+      id: 'manage',
+      title: 'Manage User',
+      description: 'Details of user shown here',
+      icon: User,
+      color: 'bg-pink-500 hover:bg-pink-600',
+      iconColor: 'text-white',
+      route: '/user_details'}
     // },
     // {
     //   id: 'delete',

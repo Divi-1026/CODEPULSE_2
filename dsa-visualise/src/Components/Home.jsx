@@ -241,14 +241,12 @@ export default function Home() {
       {/* Home Slider Section */}
       <div className={`py-16 ${theme === "light" ? "bg-white" : "bg-gray-900"}`}>
         <div className="max-w-8xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-3 ${theme === "light" ? "text-gray-800" : "text-gray-200"}`}>
-              What Our Users Say
-            </h2>
-            <p className={`text-xl max-w-3xl mx-auto ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>
+          {/* <div className="text-center mb-12">
+            
+            <p className={`text-3xl max-w-3xl mx-auto ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>
               Discover how CodePulse is helping students master DSA concepts
             </p>
-          </div>
+          </div> */}
           
           {/* Slider Container with Better Styling */}
           <div className={`rounded-2xl p-8 ${theme === "light" ? "bg-gray-50 border border-gray-200" : "bg-gray-800 border border-gray-700"}`}>

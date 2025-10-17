@@ -49,6 +49,8 @@ import Homepage from "./Components/Leeetcode/ProblemListHome";
 import ProblemPage from "./Components/Leeetcode/ProblemPage";
 import Admin from "./Components/Leeetcode/AdminPannel";
 import ProblemCreate from "./Components/Leeetcode/ProblemCreate";
+import UserList from "./Components/Leeetcode/UserList";
+import AboutPage from "./Components/About";
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
@@ -119,7 +121,8 @@ function App() {
                 </PublicRoute>
               } 
             />
-
+            <Route path='/about' element={<AboutPage></AboutPage>}></Route>
+<Route path='/user_details' element={<UserList></UserList>}></Route>
             {/* Protected Routes - Only accessible when authenticated */}
             <Route 
               path="/" 

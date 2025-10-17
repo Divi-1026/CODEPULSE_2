@@ -219,9 +219,9 @@ function Homepage() {
           </div>
 
           {/* Footer Note */}
-          <div className="text-center mt-12 text-gray-500 dark:text-gray-400">
+          {/* <div className="text-center mt-12 text-gray-500 dark:text-gray-400">
             <p>Keep practicing to master DSA! 🚀</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
