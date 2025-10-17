@@ -226,7 +226,7 @@ export default function Header({ onExplore }) {
         : "bg-[#0f0f1a] text-gray-100 border-gray-700"
       }`}
   >
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="  sm:px-7 mx-4 lg:px-4">
       <div className="flex justify-between items-center h-20">
         {/* Branding */}
         <Link to="/" className="flex-shrink-0 flex items-center">
