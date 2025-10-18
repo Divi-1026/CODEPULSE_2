@@ -78,7 +78,7 @@ const topics = [
     },
     {
       title: "Graph Algorithms",
-      desc: "Coming Soon",
+      desc: "Learn Graph through Visulations and understand problem deply",
       icon: icons.GraphIcon,
       color: "from-amber-100 to-amber-200" // Light orange
     },
@@ -106,19 +106,19 @@ const topics = [
       icon: icons.BacktrackingIcon,
       color: "from-green-100 to-green-200" // Light green
     },
-    {
-      title: "Mathematical Algorithms",
-      desc: "Coming Soon",
-      icon: icons.MathIcon,
-      color: "from-orange-100 to-orange-200" // Light orange
-    },
+    // {
+    //   title: "Mathematical Algorithms",
+    //   desc: "Coming Soon",
+    //   icon: icons.MathIcon,
+    //   color: "from-orange-100 to-orange-200" // Light orange
+    // },
   ];
   
   export default function Visualizations() {
     return (<>
         <Header></Header>
       <div className="px-6 py-12 mt-20">
-        <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">Visualise Algorithms</h2>
+        <h2 className="text-4xl font-bold text-center mb-8 text-blue-900">Visualise Algorithms</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {topics.map(({ title, desc, icon: Icon, color }) => {
             const path = `/${title.toLowerCase().replace(/[^a-z]/g, "-")}`;

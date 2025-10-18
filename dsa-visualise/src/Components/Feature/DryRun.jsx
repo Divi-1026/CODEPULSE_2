@@ -357,7 +357,7 @@ Return ONLY the JSON array. Do not include markdown formatting or other text.`;
       </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-blue-800 to-indigo-800 text-white py-8">
+      {/* <footer className="bg-gradient-to-r from-blue-800 to-indigo-800 text-white py-8">
         <div className="max-w-8xl mx-auto px-6 text-center">
           <div className="flex justify-center space-x-6 mb-4">
             <a href="#" className="text-blue-200 hover:text-white">
@@ -371,7 +371,7 @@ Return ONLY the JSON array. Do not include markdown formatting or other text.`;
             &copy; {new Date().getFullYear()} CodePulse Visualizer. All rights reserved.
           </p>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 };

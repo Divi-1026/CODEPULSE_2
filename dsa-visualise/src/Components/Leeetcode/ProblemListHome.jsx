@@ -56,13 +56,13 @@ function Homepage() {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 pt-20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-blue-900 pt-20">
         <div className="container mx-auto p-6 max-w-7xl">
           
           {/* Header Section */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-              Problems Library
+              Problem-List
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Master Data Structures & Algorithms with our curated collection of problems
@@ -207,7 +207,7 @@ function Homepage() {
                       {/* Action Button */}
                       <NavLink
                         to={`/problem/${problem._id}`}
-                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        className="px-6 py-2 bg-gradient-to-r from-blue-500 to-sky-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-sky-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
                       >
                         Solve
                       </NavLink>

@@ -14,7 +14,7 @@ const slides = [slide1, slide2, slide3, slide4];
 
 const HomeSlider = () => {
   return (
-    <div className="w-full py-10 bg-gray-100 ml-2 mr- rounded-xl">
+    <div className="w-8xl py-10 bg-gray-100 ml-2 mr- rounded-xl">
       <h2 className="text-4xl font-bold text-center text-purple-800 pb-3 mb-8">
         Visuals of Our Site
       </h2>

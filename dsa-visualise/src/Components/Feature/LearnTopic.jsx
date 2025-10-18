@@ -82,7 +82,7 @@ const topics = [
     {
       title: "Graph Algorithms",
       link:"",
-      desc: "Coming Soon",
+      desc: "Unserdstand he concept of Graph here",
       icon: icons.GraphIcon,
       color: "from-amber-100 to-amber-200" // Light orange
     },
@@ -114,20 +114,20 @@ const topics = [
       icon: icons.BacktrackingIcon,
       color: "from-green-100 to-green-200" // Light green
     },
-    {
-      title: "Mathematical Algorithms",
-      link:"Learn_Graph",
-      desc: "Coming Soon",
-      icon: icons.MathIcon,
-      color: "from-orange-100 to-orange-200" // Light orange
-    },
+    // {
+    //   title: "Mathematical Algorithms",
+    //   link:"Learn_Graph",
+    //   desc: "Coming Soon",
+    //   icon: icons.MathIcon,
+    //   color: "from-orange-100 to-orange-200" // Light orange
+    // },
   ];
   
   export default function LearnTopic() {
     return (<>
-        <Header></Header>
-      <div className="px-6 py-12 mt-20">
-        <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">Learn Algorithms</h2>
+        {/* <Header></Header> */}
+      <div className="px-6 py-8 mt-20">
+        <h2 className="text-4xl font-bold text-center mb-8 text-blue-900">Learn Algorithms</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {topics.map(({ title,link,desc,icon: Icon, color }) => {
             const path = `/${title.toLowerCase().replace(/[^a-z]/g, "-")}`;

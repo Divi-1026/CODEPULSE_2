@@ -272,19 +272,22 @@ const ProblemPage = () => {
                 <div className="space-y-6">
                   {/* Problem Header */}
                   <div className="flex items-center gap-4 mb-2">
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold text-black ">
                       {problem.title || 'Untitled Problem'}
                     </h1>
+                    {/* <span className={`px-3 py-2 right-2  rounded-full text-sm font-medium ${getDifficultyColor(problem.difficulty)}`}>
+                      {problem.difficulty ? problem.difficulty.charAt(0).toUpperCase() + problem.difficulty.slice(1) : 'Unknown'}
+                    </span> */}
                   </div>
 
                   {/* Difficulty and Tags */}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(problem.difficulty)}`}>
+                  <div className="flex items-center mt-1 gap-3 flex-wrap">
+                    <span className={`px-3 py-2  rounded-full text-sm font-medium ${getDifficultyColor(problem.difficulty)}`}>
                       {problem.difficulty ? problem.difficulty.charAt(0).toUpperCase() + problem.difficulty.slice(1) : 'Unknown'}
                     </span>
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
+                    {/* <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
                       {problem.tags || 'General'}
-                    </span>
+                    </span> */}
                   </div>
 
                   {/* Problem Description */}
@@ -466,6 +469,7 @@ const ProblemPage = () => {
                     readOnly: false,
                     cursorStyle: 'line',
                     mouseWheelZoom: true,
+                     padding: { top: 18, bottom: 0 }
                   }}
                 />
               </div>
