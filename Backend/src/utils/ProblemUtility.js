@@ -1,6 +1,6 @@
 const axios=require('axios');
 
-const getlanguageById=(lang)=>{
+const getLanguageById=(lang)=>{
     const language={
         "c++":54,
         "cpp":54,
@@ -43,7 +43,7 @@ const options = {
   console.log("fetch called")
   const data = await fetchData();
   console.log("Get data")
- console.log(data);
+//  console.log(data);
   return data;
 
 } 
@@ -91,5 +91,5 @@ const submitToken=async(resultToken)=>{
 
 
 
-module.exports={getlanguageById,submitBatch,submitToken};
+module.exports={getLanguageById,submitBatch,submitToken};
 

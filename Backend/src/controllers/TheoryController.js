@@ -6,7 +6,7 @@ const getMarkedProblems = async (req, res) => {
   try {
     console.log("Function called");
     console.log("I am called gettheroy")
-    const userId = req.user._id; // Changed from req.result to req.user._id
+    const userId = req.result; // Changed from req.result to req.user._id
     console.log(userId);
     
     if (!userId) {
@@ -35,14 +35,14 @@ const toggleProblemStatus = async (req, res) => {
   try {
     const { problemTitle } = req.params;
     console.log("Toggle request for:", problemTitle);
-    console.log("User ID:", req.user._id);
+    // console.log("User ID:", req.user._id);
 
-    let theoryDoc = await Theory.findOne({ user: req.user._id });
+    let theoryDoc = await Theory.findOne({ user: req.result });
 
     if (!theoryDoc) {
       // Create new document if doesn't exist
       theoryDoc = new Theory({
-        user: req.user._id,
+        user: req.result,
         markedProblems: [problemTitle]
       });
       console.log("Created new theory document");

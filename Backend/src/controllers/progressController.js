@@ -32,13 +32,14 @@ const getMarkedProblems = async (req, res) => {
 const toggleProblemStatus = async (req, res) => {
   try {
     const { problemTitle } = req.params;
+    console.log(req.result)
   // console.log(req.params)
   // console.log(problemTitle)
-    let progress = await Progress.findOne({ user: req.user._id });
+    let progress = await Progress.findOne({ user: req.result});
 
     if (!progress) {
       progress = new Progress({
-        user: req.user._id,
+        user: req.result,
         markedProblems: [problemTitle]
       });
     } else {
