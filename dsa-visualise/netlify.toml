@@ -1,4 +1,4 @@
 [build]
   base = "dsa-visualise"
-  publish = "dsa-visualise/dist"
+  publish = "dist"
   command = "npm install --legacy-peer-deps && npm run build"
