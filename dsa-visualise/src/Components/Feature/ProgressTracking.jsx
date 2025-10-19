@@ -19,10 +19,10 @@ export default function ProgressTracking() {
       try {
         setLoading(true);
         const [problemsRes, learningRes, solvedRes,totalproblem1] = await Promise.all([
-          axios.get('https://codepulse-2-cdpc.onrender.com/api/progress/marked'),
-          axios.get('https://codepulse-2-cdpc.onrender.com/api/theory/marked'),
-          axios.get('https://codepulse-2-cdpc.onrender.com/problem/problemSolvedByUser'),
-          axios.get('https://codepulse-2-cdpc.onrender.com/problem/getAllProblem')
+          axios.get('https://codepulse-2-cdpc.onrender.com/api/progress/marked', { withCredentials: true }),
+    axios.get('https://codepulse-2-cdpc.onrender.com/api/theory/marked', { withCredentials: true }),
+    axios.get('https://codepulse-2-cdpc.onrender.com/problem/problemSolvedByUser', { withCredentials: true }),
+    axios.get('https://codepulse-2-cdpc.onrender.com/problem/getAllProblem', { withCredentials: true })
         ]);
         console.log(totalproblem1.data)
         console.log("from frontend", learningRes);
