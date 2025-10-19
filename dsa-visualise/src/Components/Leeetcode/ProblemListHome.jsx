@@ -19,7 +19,7 @@ function Homepage() {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const { data } = await axios.get('https://codepulse-2-cdpc.onrender.com/problem/getAllProblem');
+        const { data } = await axios.get('/problem/getAllProblem');
         setProblems(data);
         console.log(problems)
       } catch (error) {
