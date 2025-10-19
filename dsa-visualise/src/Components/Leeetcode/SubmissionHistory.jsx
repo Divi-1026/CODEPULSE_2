@@ -13,18 +13,28 @@ const SubmissionHistory = ({ problemId }) => {
         setLoading(true);
         const response = await axios.get(`/problem/submittedProblem/${problemId}`);
         
-        // Handle different response formats
+        // Handle different response formats and filter out invalid submissions
+        let submissionsData = [];
+        
         if (Array.isArray(response.data)) {
-          setSubmissions(response.data);
+          submissionsData = response.data;
         } else if (response.data && Array.isArray(response.data.submissions)) {
-          setSubmissions(response.data.submissions);
-        } else if (response.data) {
-          // If it's a single object, wrap it in array
-          setSubmissions([response.data]);
+          submissionsData = response.data.submissions;
+        } else if (response.data && response.data._id) {
+          // If it's a single valid submission object
+          submissionsData = [response.data];
         } else {
-          setSubmissions([]);
+          submissionsData = [];
         }
         
+        // Filter out empty or invalid submissions
+        const validSubmissions = submissionsData.filter(sub => 
+          sub && 
+          (sub._id || sub.code || sub.language) && // At least one of these should exist
+          sub.status !== undefined // Status should be defined
+        );
+        
+        setSubmissions(validSubmissions);
         setError(null);
       } catch (err) {
         setError('Failed to fetch submission history');
@@ -37,11 +47,14 @@ const SubmissionHistory = ({ problemId }) => {
 
     if (problemId) {
       fetchSubmissions();
+    } else {
+      setSubmissions([]);
+      setLoading(false);
     }
   }, [problemId]);
 
   const getStatusColor = (status) => {
-    if (!status) return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600';
+    if (!status || status === 'unknown') return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600';
     
     const statusLower = status.toLowerCase();
     switch (statusLower) {
@@ -64,7 +77,7 @@ const SubmissionHistory = ({ problemId }) => {
   };
 
   const getStatusIcon = (status) => {
-    if (!status) return (
+    if (!status || status === 'unknown') return (
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
@@ -111,7 +124,7 @@ const SubmissionHistory = ({ problemId }) => {
   };
 
   const formatMemory = (memory) => {
-    if (!memory) return '0 kB';
+    if (!memory || memory === 0) return '0 kB';
     if (memory < 1024) return `${memory} kB`;
     return `${(memory / 1024).toFixed(2)} MB`;
   };
@@ -132,7 +145,7 @@ const SubmissionHistory = ({ problemId }) => {
   };
 
   const formatLanguage = (lang) => {
-    if (!lang) return 'Unknown';
+    if (!lang || lang === 'unknown') return 'Unknown';
     const languageMap = {
       'javascript': 'JavaScript',
       'java': 'Java',
@@ -148,6 +161,11 @@ const SubmissionHistory = ({ problemId }) => {
     };
     return languageMap[lang.toLowerCase()] || lang;
   };
+
+  // Check if there are any valid submissions
+  const hasValidSubmissions = submissions.length > 0 && submissions.some(sub => 
+    sub && (sub._id || sub.code || sub.language)
+  );
 
   if (loading) {
     return (
@@ -178,18 +196,16 @@ const SubmissionHistory = ({ problemId }) => {
     );
   }
 
-  const submissionArray = Array.isArray(submissions) ? submissions : [];
-
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Submission History</h2>
-        <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full text-sm font-medium">
-          {submissionArray.length} submission{submissionArray.length !== 1 ? 's' : ''}
-        </span>
-      </div>
-      
-      {submissionArray.length === 0 ? (
+  if (!hasValidSubmissions) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Submission History</h2>
+          <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full text-sm font-medium">
+            0 submissions
+          </span>
+        </div>
+        
         <div className="text-center py-12">
           <div className="w-20 h-20 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
             <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,92 +215,103 @@ const SubmissionHistory = ({ problemId }) => {
           <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">No Submissions Yet</h3>
           <p className="text-gray-500 dark:text-gray-500">Submit your solution to see it appear here.</p>
         </div>
-      ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Language
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Runtime
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Memory
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Test Cases
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Submitted
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {submissionArray.map((submission, index) => (
-                  <tr key={submission._id || index} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2">
-                        <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(submission.status)}`}>
-                          {getStatusIcon(submission.status)}
-                          <span>{(submission.status && submission.status.charAt(0).toUpperCase() + submission.status.slice(1)) || 'Unknown'}</span>
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="font-mono text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200">
-                        {formatLanguage(submission.language)}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Submission History</h2>
+        <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full text-sm font-medium">
+          {submissions.length} submission{submissions.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Language
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Runtime
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Memory
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Test Cases
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Submitted
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {submissions.map((submission, index) => (
+                <tr key={submission._id || index} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center space-x-2">
+                      <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(submission.status)}`}>
+                        {getStatusIcon(submission.status)}
+                        <span>{(submission.status && submission.status.charAt(0).toUpperCase() + submission.status.slice(1)) || 'Unknown'}</span>
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                      <span className="font-mono">{submission.runtime || '0.00'}s</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                      <span className="font-mono">{formatMemory(submission.memory)}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          {(submission.testCasesPassed || 0)}/{(submission.testCasesTotal || 0)}
-                        </span>
-                        {(submission.testCasesTotal || 0) > 0 && (
-                          <div className="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div 
-                              className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                              style={{ 
-                                width: `${((submission.testCasesPassed || 0) / (submission.testCasesTotal || 1)) * 100}%` 
-                              }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {formatDate(submission.createdAt)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <button 
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all text-sm"
-                        onClick={() => setSelectedSubmission(submission)}
-                      >
-                        View Code
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="font-mono text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200">
+                      {formatLanguage(submission.language)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    <span className="font-mono">{submission.runtime || '0.00'}s</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    <span className="font-mono">{formatMemory(submission.memory)}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        {(submission.testCasesPassed || 0)}/{(submission.testCasesTotal || 0)}
+                      </span>
+                      {(submission.testCasesTotal || 0) > 0 && (
+                        <div className="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                          <div 
+                            className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                            style={{ 
+                              width: `${((submission.testCasesPassed || 0) / (submission.testCasesTotal || 1)) * 100}%` 
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {formatDate(submission.createdAt)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <button 
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all text-sm"
+                      onClick={() => setSelectedSubmission(submission)}
+                    >
+                      View Code
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
 
       {/* Code View Modal */}
       {selectedSubmission && (
