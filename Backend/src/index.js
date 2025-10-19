@@ -17,7 +17,7 @@ const authRouter = require('./routes/authRoutes');
 const TheoryRouter = require('./routes/TheoryRouter');
 const redisClient = require('./config/redis');
 const app = express();
-
+console.log("")
 // Connect to MongoDB
 const InitalizeConnection = async ()=>{
     try{
