@@ -54,7 +54,7 @@ export default function UserProfile() {
 
     const fetchSolvedProblems = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/problem/problemSolvedByUser');
+        const { data } = await axios.get('https://codepulse-2-cdpc.onrender.com/problem/problemSolvedByUser');
         console.log(data)
         console.log(data[0].createdAt)
         setSolvedProblems(data);

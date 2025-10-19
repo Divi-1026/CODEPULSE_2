@@ -52,7 +52,7 @@ const ProblemPage = () => {
       setError(null);
       try {
         console.log("Fetching problem with ID:", problemId);
-        const response = await axios.get(`http://localhost:5000/problem/problemById/${problemId}`);
+        const response = await axios.get(`https://codepulse-2-cdpc.onrender.com/problem/problemById/${problemId}`);
         
         if (!response.data) {
           throw new Error('No problem data received');
@@ -140,7 +140,7 @@ const ProblemPage = () => {
     setRunResult(null);
     
     try {
-      const response = await axios.post(`http://localhost:5000/submission/run/${problemId}`, {
+      const response = await axios.post(`https://codepulse-2-cdpc.onrender.com/submission/run/${problemId}`, {
         code,
         language: selectedLanguage
       });

@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       console.log(userData)
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post('https://codepulse-2-cdpc.onrender.com/api/auth/register', userData);
       console.log(response.data)
       return response.data.user;
     } catch (error) {
@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       console.log(credentials)
-      const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
+      const response = await axios.post('https://codepulse-2-cdpc.onrender.com/api/auth/login', credentials);
       return response.data.user;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -32,7 +32,7 @@ export const checkAuth = createAsyncThunk(
   'auth/check',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/auth/check');
+      const { data } = await axios.get('https://codepulse-2-cdpc.onrender.com/api/auth/check');
       return data.user;
     } catch (error) {
       if (error.response?.status === 401) {

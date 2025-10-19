@@ -68,7 +68,7 @@ const OnlineCompiler = () => {
     setShowAnalysis(false);
 
     try {
-      const res = await fetch('http://localhost:5000/api/execute', {
+      const res = await fetch('https://codepulse-2-cdpc.onrender.com/api/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, language, input }),
@@ -98,7 +98,7 @@ const OnlineCompiler = () => {
     setShowAnalysis(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/analyze-complexity', {
+      const res = await fetch('https://codepulse-2-cdpc.onrender.com/api/analyze-complexity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

@@ -21,7 +21,7 @@ function UpdateProblem() {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/problem/problemById/${problemId}`);
+        const { data } = await axios.get(`https://codepulse-2-cdpc.onrender.com/problem/problemById/${problemId}`);
         setTitle(data.title);
         setDifficulty(data.difficulty);
         setProblemcreator(data.problemcreator);
@@ -80,7 +80,7 @@ function UpdateProblem() {
         problemcreator
       };
 
-      await axios.put(`http://localhost:5000/problem/update/${problemId}`, payload);
+      await axios.put(`https://codepulse-2-cdpc.onrender.com/problem/update/${problemId}`, payload);
       setSuccess("Problem updated successfully!");
       setTimeout(() => {
         navigate(`/problem/${problemId}`);

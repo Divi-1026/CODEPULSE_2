@@ -18,7 +18,7 @@ export default function UserList() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/auth/user/detail");
+      const res = await axios.get("https://codepulse-2-cdpc.onrender.com/api/auth/user/detail");
       setUsers(res.data);
     } catch (err) {
       setError("Failed to fetch users");
@@ -33,7 +33,7 @@ export default function UserList() {
       setActionLoading(prev => ({ ...prev, [userId]: true }));
       
       // Replace with your actual admin update API endpoint
-      await axios.put(`http://localhost:5000/api/auth/user_make_admin/${userId}`);
+      await axios.put(`https://codepulse-2-cdpc.onrender.com/api/auth/user_make_admin/${userId}`);
       
       // Update local state
       setUsers(users.map(user => 

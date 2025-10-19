@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://codepulse-2-cdpc.onrender.com',
   withCredentials: true,            
 });
 

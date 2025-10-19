@@ -8,7 +8,7 @@ function CompletionCheckbox({ problemTitle }) {
   useEffect(() => {
     const fetchMarkedStatus = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/progress/marked', { withCredentials: true });
+        const res = await axios.get('https://codepulse-2-cdpc.onrender.com/api/progress/marked', { withCredentials: true });
         const markedProblems = res.data.markedProblems || [];
         
         const isMarked = markedProblems.some(p => {
@@ -38,7 +38,7 @@ function CompletionCheckbox({ problemTitle }) {
       setIsChecked(!previousState);
       
       const res = await axios.post(
-        `http://localhost:5000/api/progress/toggle-title/${encodeURIComponent(problemTitle)}`,
+        `https://codepulse-2-cdpc.onrender.com/api/progress/toggle-title/${encodeURIComponent(problemTitle)}`,
         {},
         { withCredentials: true }
       );

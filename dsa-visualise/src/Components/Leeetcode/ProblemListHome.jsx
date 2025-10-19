@@ -19,7 +19,7 @@ function Homepage() {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/problem/getAllProblem');
+        const { data } = await axios.get('https://codepulse-2-cdpc.onrender.com/problem/getAllProblem');
         setProblems(data);
         console.log(problems)
       } catch (error) {
@@ -29,7 +29,7 @@ function Homepage() {
 
     const fetchSolvedProblems = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/problem/problemSolvedByUser');
+        const { data } = await axios.get('https://codepulse-2-cdpc.onrender.com/problem/problemSolvedByUser');
         setSolvedProblems(data);
       } catch (error) {
         console.error('Error fetching solved problems:', error);

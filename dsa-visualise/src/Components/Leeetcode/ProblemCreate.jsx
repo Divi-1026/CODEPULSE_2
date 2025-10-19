@@ -141,7 +141,7 @@ const ProblemCreate = () => {
 
       console.log('Final data sent to backend:', finalData);
 
-      const response = await axios.post('http://localhost:5000/problem/create', finalData);
+      const response = await axios.post('https://codepulse-2-cdpc.onrender.com/problem/create', finalData);
 
       if (response.status === 201) {
         setMessage('✅ Problem created successfully!');

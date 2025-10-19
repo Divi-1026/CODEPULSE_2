@@ -40,7 +40,7 @@ InitalizeConnection();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://codepulse2.netlify.app',
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));

@@ -11,7 +11,7 @@ const SubmissionHistory = ({ problemId }) => {
     const fetchSubmissions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/problem/submittedProblem/${problemId}`);
+        const response = await axios.get(`/problem/submittedProblem/${problemId}`);
         setSubmissions(response.data);
         setError(null);
       } catch (err) {

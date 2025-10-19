@@ -22,7 +22,7 @@ function ManageProblems() {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/problem/getAllProblem");
+        const { data } = await axios.get("https://codepulse-2-cdpc.onrender.com/problem/getAllProblem");
         // Ensure all problems have required fields with fallbacks
         const safeData = data.map(problem => ({
           ...problem,
@@ -48,7 +48,7 @@ function ManageProblems() {
     if (!window.confirm("Are you sure you want to delete this problem?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/problem/delete/${id}`);
+      await axios.delete(`https://codepulse-2-cdpc.onrender.com/problem/delete/${id}`);
       // Remove deleted problem from state
       setProblems(prev => prev.filter(problem => problem._id !== id));
       alert("Problem deleted successfully!");
