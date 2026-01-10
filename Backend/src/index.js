@@ -19,15 +19,22 @@ const redisClient = require('./config/redis');
 const app = express();
 console.log("")
 // Connect to MongoDB
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime()
+  });
+});
+app.listen(process.env.PORT, ()=>{
+            console.log("Server listening at port number: "+ process.env.PORT);
+        })
 const InitalizeConnection = async ()=>{
     try{
 
         await Promise.all([connectDB(),redisClient.connect()]);
         console.log("DB Connected");
         
-        app.listen(process.env.PORT, ()=>{
-            console.log("Server listening at port number: "+ process.env.PORT);
-        })
+        
 
     }
     catch(err){
