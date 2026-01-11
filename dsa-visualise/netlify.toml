@@ -1,4 +1,9 @@
 [build]
   base = "dsa-visualise"
-  publish = "dist"
+  publish = "dsa-visualise/dist"
   command = "npm install --legacy-peer-deps && npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
