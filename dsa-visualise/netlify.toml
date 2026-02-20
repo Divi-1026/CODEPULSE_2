@@ -1,7 +1,10 @@
 [build]
   base = "dsa-visualise"
-  publish = "dist"
+  publish = "dsa-visualise/dist"
   command = "npm install --legacy-peer-deps && npm run build"
+
+[functions]
+  directory = "dsa-visualise/netlify/functions"
 
 [[redirects]]
   from = "/*"
