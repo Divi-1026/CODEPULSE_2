@@ -367,7 +367,7 @@ export default function Header({ onExplore }) {
     </Link>
 
     {/* Show Admin Panel only if user is admin */}
-    {user.role === "admin" && (
+    {user?.role === "admin" && (
       <Link
         to="/admin"
         className={`inline-flex items-center px-4 py-2 text-base font-medium rounded-lg transition
