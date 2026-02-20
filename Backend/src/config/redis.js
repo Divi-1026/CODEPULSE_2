@@ -13,8 +13,8 @@
 // redisClient.on('error', (err) => console.error('Redis Client Error', err));
 
 // module.exports = redisClient;
-import { createClient } from 'redis';
-
+const { createClient } = require('redis');
+require('dotenv').config({ path: __dirname + '/../../.env' });
 const client = createClient({
     username: 'default',
     password: '4rSx48fFS24pfjbuiM29UL0fegeNUBtK',
